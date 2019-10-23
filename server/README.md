@@ -5,7 +5,7 @@
 - Instalar mysql: npm install mysql2
 - Correr en mysql (usuario root contraseña root por defecto):
 ~~~sql
-create database PharmaProducts;
+create database MenuProducts;
 ~~~
 
 ### Para correr:
