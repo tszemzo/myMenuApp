@@ -1,4 +1,4 @@
-# Server de Productos Farmaceuticos
+# Server de myMenu App
 
 ### Primero
 - Instalar: npm 6.2.0
