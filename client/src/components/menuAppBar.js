@@ -102,8 +102,8 @@ class MenuAppBar extends React.Component {
                 <Link to="/acerca">
                   <MenuItem>Sobre nosotros</MenuItem>
                 </Link>
-                <Link to="/promociones">
-                  <MenuItem>Promociones y Metodos de Pago</MenuItem>
+                <Link to="/metodos">
+                  <MenuItem>Metodos de Pago</MenuItem>
                 </Link>
                 <Link to="/contacto">
                   <MenuItem>Sugerencias</MenuItem>

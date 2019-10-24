@@ -16,6 +16,7 @@ import Backoffice from './pages/backoffice';
 import AddProduct from './pages/addProduct';
 import EditProduct from './pages/editProduct';
 import AddPrinciple from './pages/addPrinciple';
+import PaymentMethods from './pages/paymentMethods';
 
 const theme = createMuiTheme({
   palette: {
@@ -52,6 +53,7 @@ export default class App extends Component {
             <Route path="/acerca" exact={true} component={About} />
             <Route path="/" exact={true} component={Landing} />
             <Route path="/contacto" exact={true} component={Contact} />
+            <Route path="/metodos" exact={true} component={PaymentMethods} />
             <Route path="/subir/producto"  component={AddProduct} />
             <Route path="/subir/principio"  component={withAdmin(AddPrinciple)} />
             <Route path="/backoffice"  component={Backoffice} />

@@ -13,7 +13,12 @@ class About extends React.Component{
 				El Restaurante
 			</Typography>
 			<Typography component="p" variant="p" color="secondary" align="left" gutterBottom>
-				<br></br>Somos los dueños de un restaurante, con un menú muy cambiante y variado.
+				<br></br>Somos un restaurante con una larga trayectoria brindando el mejor servicio
+				a consumidores con paladares muy variados.
+				<br></br>
+				<br></br>
+				El personal de cocina y atención ha sido capacitado para que used pueda tener una
+				experiencia culinaria a la altura de sus expectativas.
 			</Typography>
 			</Paper>
 		);
