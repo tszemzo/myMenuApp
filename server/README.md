@@ -1,11 +1,11 @@
-# Server de Productos Farmaceuticos
+# Server de myMenu App
 
 ### Primero
 - Instalar: npm 6.2.0
 - Instalar mysql: npm install mysql2
 - Correr en mysql (usuario root contraseña root por defecto):
 ~~~sql
-create database PharmaProducts;
+create database MenuProducts;
 ~~~
 
 ### Para correr:
