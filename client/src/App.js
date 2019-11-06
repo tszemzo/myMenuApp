@@ -47,7 +47,7 @@ export default class App extends Component {
           <Router>
 
           <MenuAppBar/>
-            <Route path="/productos" exact={true} component={withAuth(Home)} />
+            <Route path="/productos" exact={true} component={Home} />
             <Route path="/" exact component={Home} />
             <Route path="/login" exact={true} component={Login} />
             <Route path="/acerca" exact={true} component={About} />
