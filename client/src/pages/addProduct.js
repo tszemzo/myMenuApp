@@ -195,12 +195,12 @@ class AddProduct extends React.Component{
 				            {this.state.activePrinciples.map((img, idx) => (
 					          	<FormControl margin="normal">
 					          	<div className="listInput">
-				              		<InputLabel htmlFor="text">Principio activo {idx + 1}</InputLabel>
+				              		<InputLabel htmlFor="text">Categoria {idx + 1}</InputLabel>
 						            <InputBase
 						              className={classes.inputInList}
 						              name="activePrinciples"
 						              autoComplete='off'
-						              placeholder={`Principio activo ${idx + 1}`}
+						              placeholder={`Categoria ${idx + 1}`}
 						              value={img}
 						              onChange={this.handleInputListChange(idx)}
 						            />
@@ -222,7 +222,7 @@ class AddProduct extends React.Component{
 					          onClick={this.handleAddList('activePrinciples')}
 					          className="small"
 					        >
-					          Agregar Principio Activo
+					          Agregar Categoria
 					        </Button>
 			            </div>
 

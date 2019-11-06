@@ -214,7 +214,7 @@ class ProductModal extends React.Component {
               </IconButton>
             </div>
             <Typography variant="body1" gutterBottom>
-            Principios activos: {
+            Categorias: {
               this.props.product.ActivePrinciples.map((activePrinciple, idx) => {
                 return (
                   <Button onClick={() => this.openPrincipleModal(activePrinciple)} color="primary">
