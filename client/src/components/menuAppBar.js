@@ -96,8 +96,11 @@ class MenuAppBar extends React.Component {
                 open={open}
                 onClose={this.handleClose}
               >
+                <Link to="/login">
+                  <MenuItem onClick={this.closeSession}>Iniciar Sesion</MenuItem>
+                </Link>
                 <Link to="/productos">
-                  <MenuItem>Inicio</MenuItem>
+                  <MenuItem>Menu</MenuItem>
                 </Link>
                 <Link to="/acerca">
                   <MenuItem>Sobre nosotros</MenuItem>
