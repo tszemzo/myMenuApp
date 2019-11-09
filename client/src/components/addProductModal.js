@@ -314,7 +314,7 @@ class AddProductModal extends React.Component {
 			            <FormControl margin="normal" required fullWidth>
 			              <InputLabel htmlFor="text">Precio</InputLabel>
 			              <Input name="price"
-			              type="price"
+			              type="number"
 			              autoComplete='off'
 			              id="price"
 			              onChange={this.handleInputChange}
