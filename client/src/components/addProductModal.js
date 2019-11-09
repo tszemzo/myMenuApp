@@ -332,6 +332,17 @@ class AddProductModal extends React.Component {
 			              onChange={this.handleInputChange}
 			              />
 			            </FormControl>
+			            <FormControl margin="normal" required fullWidth>
+			              <InputLabel htmlFor="textarea">Apto vegetarianos/celíacos</InputLabel>
+			              <Input name="vegetarian"
+			              type="vegetarian"
+			              autoComplete='off'
+			              value={this.state.vegetarian}
+			              multiline={true} 
+			              id="vegetarian"
+			              onChange={this.handleInputChange}
+			              />
+			            </FormControl>
 
 			            <div style={{margin: '10px'}} className={classes.list}>
 				            {this.state.img.map((img, idx) => (
