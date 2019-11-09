@@ -33,7 +33,7 @@ const server_url = config.server_url;
 
 const styles = {
   card: {
-    maxWidth: 345,
+    maxWidth: 350,
   },
   media: {
     objectFit: 'cover',
@@ -92,7 +92,8 @@ class AddProductModal extends React.Component {
 		super(props);
 		this.state = {
 			name: '',
-			code: '',
+			price: '',
+			vegetarian: '',
 			info: '',
 			img: [],
 			format: [],
@@ -167,7 +168,8 @@ class AddProductModal extends React.Component {
 			})
 			this.setState({
 				name: product.name,
-				code: product.code,
+				price: product.price,
+				vegetarian: product.vegetarian,
 				info: product.description,
 				img: product.images,
 				format: product.formats,
@@ -212,7 +214,8 @@ class AddProductModal extends React.Component {
 		let product = {
 			id: this.props.product.id,
 		    name: this.state.name,
-			code: this.state.code,
+			price: this.state.price,
+			vegetarian: this.state.vegetarian,
 			info: this.state.info,
 			img:  this.state.img,
 			format: this.state.format,
@@ -239,7 +242,8 @@ class AddProductModal extends React.Component {
 	createNew(){
 		let product = {
 		    name: this.state.name,
-			code: this.state.code,
+			price: this.state.price,
+			vegetarian: this.state.vegetarian,
 			info: this.state.info,
 			img:  this.state.img,
 			format: this.state.format,
@@ -248,7 +252,8 @@ class AddProductModal extends React.Component {
 		console.log(product);
 		this.setState({
 					name: '',
-					code: '',
+					price: '',
+					vegetarian: '',
 					info: '',
 					img: [],
 					format: [],
@@ -307,51 +312,28 @@ class AddProductModal extends React.Component {
 			              autoFocus />
 			            </FormControl>
 			            <FormControl margin="normal" required fullWidth>
-			              <InputLabel htmlFor="text">Codigo</InputLabel>
-			              <Input name="code"
-			              type="code"
+			              <InputLabel htmlFor="text">Precio</InputLabel>
+			              <Input name="price"
+			              type="price"
 			              autoComplete='off'
-			              id="code"
+			              id="price"
 			              onChange={this.handleInputChange}
-			              value={this.state.code}
+			              value={this.state.price}
 			              />
 			            </FormControl>
-			            <div className={classes.list}>
-				            {this.state.format.map((format, idx) => (
-					          	<FormControl margin="normal">
-					          	<div className="listInput">
-				              		<InputLabel htmlFor="text">Formato {idx + 1}</InputLabel>
-						            <InputBase
-						              className={classes.inputInList}
-						              name="format"
-						              autoComplete='off'
-						              placeholder={`Formato ${idx + 1}`}
-						              value={format}
-						              onChange={this.handleInputListChange(idx)}
-						            />
-						            <IconButton className={classes.iconButton}
-						              type="button"
-						              onClick={this.handleRemoveList(idx,['format'])}
-						              className="small"
-						            >
-								        <RemoveCircleIcon />
-								    </IconButton>
-					          	</div>
-					        	</FormControl>
-					        ))}
-					        <Button
-					          type="button"
-					          fullWidth
-					          variant="outlined"
-					          color="secondary"
-					          onClick={this.handleAddList('format')}
-					          className="small"
-					        >
-					          Agregar Formato
-					        </Button>
-			            </div>
+			            <FormControl margin="normal" required fullWidth>
+			              <InputLabel htmlFor="textarea">Descripción</InputLabel>
+			              <Input name="info"
+			              type="info"
+			              autoComplete='off'
+			              value={this.state.info}
+			              multiline={true} 
+			              id="info"
+			              onChange={this.handleInputChange}
+			              />
+			            </FormControl>
 
-			            <div className={classes.list}>
+			            <div style={{margin: '10px'}} className={classes.list}>
 				            {this.state.img.map((img, idx) => (
 					          	<FormControl margin="normal">
 					          	<div className="listInput">
@@ -413,6 +395,7 @@ class AddProductModal extends React.Component {
 					        	</FormControl>
 					        ))}
 					        <Button
+					          style={{margin: '10px'}}
 					          type="button"
 					          fullWidth
 					          variant="outlined"
@@ -424,24 +407,13 @@ class AddProductModal extends React.Component {
 					        </Button>
 			            </div>
 
-			            <FormControl margin="normal" required fullWidth>
-			              <InputLabel htmlFor="textarea">Descripción</InputLabel>
-			              <Input name="info"
-			              type="info"
-			              autoComplete='off'
-			              value={this.state.info}
-			              multiline={true} 
-			              id="info"
-			              onChange={this.handleInputChange}
-			              />
-			            </FormControl>
-
 			            <Button
 			              type="submit"
 			              fullWidth
 			              variant="contained"
 			              color="primary"
 			              className={classes.submit}
+			              style={{margin: '10px'}}
 			            >
 			              Subir
 			            </Button>

@@ -53,9 +53,9 @@ export default class App extends Component {
             <Route path="/acerca" exact={true} component={About} />
             <Route path="/contacto" exact={true} component={Contact} />
             <Route path="/metodos" exact={true} component={PaymentMethods} />
-            <Route path="/subir/producto"  component={AddProduct} />
+            <Route path="/subir/producto"  component={withAdmin(AddProduct)} />
             <Route path="/subir/principio"  component={withAdmin(AddPrinciple)} />
-            <Route path="/backoffice"  component={Backoffice} />
+            <Route path="/backoffice"  component={withAdmin(Backoffice)} />
             <Route path="/editar/:id"  component={withAdmin(EditProduct)} />
             {/*<Redirect to="/" />*/}
           </Router>
