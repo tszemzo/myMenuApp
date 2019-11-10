@@ -24,10 +24,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      vegetarian: {
-        allowNull: true,
-        type: Sequelize.STRING
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

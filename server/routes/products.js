@@ -36,11 +36,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res){
-	let {name, price, vegetarian, info, activePrinciples, foodTypeId} = req.body
+	let {name, price, info, activePrinciples, foodTypeId} = req.body
 	let images = req.body.img;
 	console.log(req.body)
 
-	productsRepository.addNewProduct(name, info, price, vegetarian, foodTypeId).then((product) => {
+	productsRepository.addNewProduct(name, info, price, foodTypeId).then((product) => {
 		var productId = product.id;
 		if(images)
 			imagesRepository.addNewImage(productId, images).then(images => {
@@ -69,8 +69,8 @@ router.post('/', function(req, res){
 
 router.put('/:id',function(req, res){
 	let productId = req.params.id;
-	let { info, name, price, vegetarian, activePrinciples, img, foodTypeId } = req.body
-	productsRepository.changeProductData(productId, name, vegetarian, price, info, activePrinciples, img, foodTypeId).then((product) => {
+	let { info, name, price,  activePrinciples, img, foodTypeId } = req.body
+	productsRepository.changeProductData(productId, name, price, info, activePrinciples, img, foodTypeId).then((product) => {
 		res.json(product)
 	})
 
