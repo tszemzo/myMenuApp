@@ -141,7 +141,9 @@ class AddProductModal extends React.Component {
 						this.state.activePrinciples.map((categoria,i) => {
 							if(!this.state.selectedPrinciples.includes(categoria)){
 								return(
-									<ListItem key={i} onClick={() => {this.setActivePrinciple(idx, categoria)}} button>
+									<ListItem key={i} onClick={() => {
+										this.setActivePrinciple(idx, categoria)}
+									} button>
 										<ListItemText  primary={categoria.name} />
 									</ListItem>
 								)
@@ -393,16 +395,14 @@ class AddProductModal extends React.Component {
 				            {this.state.selectedPrinciples.map((selectedCategory, idx) => (
 					          	<FormControl margin="normal" >
 									<div className="listInput" >
-
-									<InputLabel  htmlFor="text">Categoria {idx + 1}</InputLabel>
 									<InputBase
 									className={classes.inputInList}
-									name="activePrinciples"
+									name="selectedPrinciples"
 									autoComplete='off'
-									placeholder={`Categoria ${idx + 1}`}
+									placeholder={`Categoria? ${idx + 1}`}
 									onFocus={() => {this.setState({ selectedForm : idx, principlesSuggestions: true})}}
-									value={selectedCategory}
-									onChange={this.handleInputListChange(idx)}
+									value={selectedCategory.name}
+									//onChange={this.handleInputListChange(idx)}
 									/>
 						            <IconButton className={classes.iconButton}
 						              type="button"

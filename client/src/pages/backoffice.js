@@ -21,12 +21,17 @@ class Backoffice extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			tabs:[{
+			tabs:[
+			{
+				label: 'Categorias',
+				renderer: this.renderActivePrinciplesBackoffice.bind(this)
+			},
+			{
 				label: 'Platos',
 				renderer: this.renderProductsBackoffice.bind(this)
 			},{
 				label: 'Menues',
-				renderer: this.renderActivePrinciplesBackoffice.bind(this)
+				renderer:  this.renderPaymentMethodsBackoffice.bind(this)
 			},
 			{
 				label: 'Métodos de pago',
@@ -237,7 +242,7 @@ class Backoffice extends Component{
 			<div>
 			<div style={styles.cardHeader}>
 							<Typography variant="h4">
-								Menus
+								Categorias
 							</Typography>
 							<IconButton onClick={() => this.setState({addPrincipleShow: true})}>
 								<AddBox color="primary"/>
