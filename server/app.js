@@ -9,7 +9,7 @@ var productsRouter = require('./routes/products');
 var usersRouter = require('./routes/users');
 var principlesRouter = require('./routes/principles');
 var methodsRouter = require('./routes/paymentmethod');
-
+var foodTypes = require('./routes/foodTypes');
 var app = express();
 
 // view engine setup
@@ -33,6 +33,7 @@ app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/product', productsRouter);
 app.use('/methods', methodsRouter);
+app.use('/foodTypes', foodTypes);
 app.use('/principles', principlesRouter);
 
 // catch 404 and forward to error handler

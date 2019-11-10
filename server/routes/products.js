@@ -40,47 +40,40 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res){
-	let {name, price, vegetarian, info, activePrinciples} = req.body
+	let {name, price, vegetarian, info, activePrinciples, foodTypeId} = req.body
 	let images = req.body.img;
-	let formats = req.body.format;
 	console.log(req.body)
-	productsRepository.addNewProduct(name, info, price, vegetarian).then((product) => {
+	productsRepository.addNewProduct(name, info, price, vegetarian, foodTypeId).then((product) => {
 		var productId = product.id;
 		if(images)
 			imagesRepository.addNewImage(productId, images).then(images => {
-				formatsRepository.addNewFormat(productId, formats).then(formats=> {
-					productsRepository.linkProductAndPrinciple(productId,activePrinciples).then(principles => {
-						activePrinciplesRepository.getPrinciplesByList(activePrinciples).then(principles => {
-							let imageLinks = []
-							let formatsInfo = []
-							let principlesList = []
-							images.forEach(image => {
-								imageLinks.push(image.link)
-							})
-							formats.forEach(format => {
-								formatsInfo.push(format.info)
-							})
-							principles.forEach(principle => {
-								if(activePrinciples.includes(principle.id))
-									principlesList.push(principle)
-							})
-							product.dataValues.images = imageLinks
-							product.dataValues.formats = formatsInfo
-							product.dataValues.ActivePrinciples = principlesList
-							res.json(product)
-
+				productsRepository.linkProductAndPrinciple(productId,activePrinciples).then(principles => {
+					activePrinciplesRepository.getPrinciplesByList(activePrinciples).then(principles => {
+						let imageLinks = []
+						let principlesList = []
+						images.forEach(image => {
+							imageLinks.push(image.link)
 						})
+						principles.forEach(principle => {
+							if(activePrinciples.includes(principle.id))
+								principlesList.push(principle)
+						})
+						product.dataValues.images = imageLinks
+						product.dataValues.ActivePrinciples = principlesList
+						res.json(product)
 
 					})
+
 				})
+
 			})
 	});
 })
 
 router.put('/:id',function(req, res){
 	let productId = req.params.id;
-	let { info, name, price, vegetarian, activePrinciples, img, format } = req.body
-	productsRepository.changeProductData(productId, name, vegetarian, price, info, activePrinciples, img, format).then((product) => {
+	let { info, name, price, vegetarian, activePrinciples, img, foodTypeId } = req.body
+	productsRepository.changeProductData(productId, name, vegetarian, price, info, activePrinciples, img, foodTypeId).then((product) => {
 		res.json(product)
 	})
 

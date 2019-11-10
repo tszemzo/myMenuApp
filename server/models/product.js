@@ -4,12 +4,10 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     price: DataTypes.INTEGER,
-    vegetarian: DataTypes.STRING
   }, {});
   Product.associate = function(models) {
     // associations can be defined here
     Product.hasMany(models.Images)
-    Product.hasMany(models.Formats)
     Product.belongsToMany(models.ActivePrinciples,{
       through: {
         model: models.ProductActivePrinciple,

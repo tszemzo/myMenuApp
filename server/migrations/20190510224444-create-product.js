@@ -20,8 +20,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      vegetarian: {
+      foodTypeId: {
         allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      vegetarian: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       createdAt: {

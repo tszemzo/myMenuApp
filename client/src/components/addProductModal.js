@@ -96,6 +96,7 @@ class AddProductModal extends React.Component {
 			price: '',
 			vegetarian: '',
 			info: '',
+			foodTypeId: 0,
 			img: [],
 			format: [],
 			activePrinciples: [],
@@ -177,6 +178,7 @@ class AddProductModal extends React.Component {
 				vegetarian: product.vegetarian,
 				info: product.description,
 				img: product.images,
+				foodTypeId: product.foodTypeId,
 				format: product.formats,
 				activePrinciples: principlesNames,
 				selectedPrinciples: principlesId
@@ -221,6 +223,7 @@ class AddProductModal extends React.Component {
 		    name: this.state.name,
 			price: this.state.price,
 			vegetarian: this.state.vegetarian,
+			foodTypeId: this.state.foodTypeId,
 			info: this.state.info,
 			img:  this.state.img,
 			format: this.state.format,
@@ -251,6 +254,7 @@ class AddProductModal extends React.Component {
 			vegetarian: this.state.vegetarian,
 			info: this.state.info,
 			img:  this.state.img,
+			foodTypeId: this.state.foodTypeId,
 			format: this.state.format,
 			activePrinciples: this.state.selectedPrinciples.map((value) =>value.id),
 		};
@@ -260,6 +264,7 @@ class AddProductModal extends React.Component {
 					price: '',
 					vegetarian: '',
 					info: '',
+					foodTypeId:0
 					img: [],
 					format: [],
 					activePrinciples: [],
