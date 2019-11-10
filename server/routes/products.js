@@ -21,17 +21,13 @@ router.get('/:id',function(req, res){
 router.get('/', function(req, res, next) {
 	return productsRepository.getAllProducts().then((products) => {
 		products.forEach(product => {
-			const { Images, Formats } = product
+			const { Images} = product
 			let imageLinks = []
-			let formatsInfo = []
 			Images.forEach(image => {
 				imageLinks.push(image.link)
 			})
-			Formats.forEach(format => {
-				formatsInfo.push(format.info)
-			})
 			product.dataValues.images = imageLinks
-			product.dataValues.formats = formatsInfo
+
 		})
 		res.json({
 			products

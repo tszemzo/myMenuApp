@@ -3,7 +3,6 @@ var Products = require("../models").Product;
 var ProductActivePrinciple = require("../models").ProductActivePrinciple;
 var ActivePrinciples = require("../models").ActivePrinciples;
 var Images = require("../models").Images;
-var Formats = require("../models").Formats;
 
 class ProductsRepo {
 	getProduct(id){
@@ -14,8 +13,6 @@ class ProductsRepo {
 			include:[{
 				model: Images
 			},{
-				model: Formats
-			},{
 				model: ActivePrinciples
 			}]
 		});
@@ -25,8 +22,6 @@ class ProductsRepo {
 		return Products.findAll({
 			include:[{
 				model: Images
-			},{
-				model: Formats
 			},{
 				model: ActivePrinciples
 			}]
@@ -43,8 +38,6 @@ class ProductsRepo {
 				model: ActivePrinciples
 			},{
 				model: Images
-			},{
-				model: Formats
 			},]
 		}).then(product => {
 			let newData = {
@@ -57,19 +50,11 @@ class ProductsRepo {
 			product.update(newData).then(product => {
 				let removedPrincipleList = []
 				let removedPhotoList = []
-				let removedFormatList = []
 				product.Images.forEach(image => {
 					if(images.includes(image.link)){
 						images.splice(images.indexOf(image.link),1)
 					}else{
 						removedPhotoList.push(image.id)
-					}
-				})
-				product.Formats.forEach(format => {
-					if(formats.includes(format.info)){
-						formats.splice(formats.indexOf(format.info),1)
-					}else{
-						removedFormatList.push(format.id)
 					}
 				})
 				product.ActivePrinciples.forEach(principle => {
@@ -81,9 +66,7 @@ class ProductsRepo {
 				})
 				return _self.updateLinks(product.id, activePrinciples, removedPrincipleList).then(data => {
 					return _self.updatePhotos(product.id, images, removedPhotoList).then(data => {
-						return _self.updateFormats(product.id, formats, removedFormatList).then(data => {
-							return _self.getProduct(product.id)
-						})
+						return _self.getProduct(product.id)
 					})
 				})
 			})
@@ -108,22 +91,6 @@ class ProductsRepo {
 		return Images.bulkCreate(newRegisters)
 	}
 
-	updateFormats(productId, newList, removedList){
-		let newRegisters = []
-		newList.forEach(info => {
-			newRegisters.push({
-				productId,
-				info
-			})
-		})
-		Formats.destroy({
-			where:{
-				info: removedList,
-				productId
-			}
-		})
-		return Formats.bulkCreate(newRegisters)
-	}
 
 	updateLinks(productId, newList, removedList){
 		let newRegisters = []
@@ -170,14 +137,9 @@ class ProductsRepo {
 			},
 			include: [{
 				model: Images
-			},{
-				model: Formats	
 			}]
 		}).then( product => {
 			product.Images.forEach(img => {
-				img.destroy()
-			})
-			product.Formats.forEach(img => {
 				img.destroy()
 			})
 			return product.destroy()
