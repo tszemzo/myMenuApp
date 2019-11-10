@@ -248,7 +248,7 @@ class AddProductModal extends React.Component {
 			info: this.state.info,
 			img:  this.state.img,
 			format: this.state.format,
-			activePrinciples: this.state.selectedPrinciples,
+			activePrinciples: this.state.selectedPrinciples.map((value) =>value.id),
 		};
 		console.log(product);
 		this.setState({
