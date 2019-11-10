@@ -114,8 +114,9 @@ class ProductsRepo {
 			name: name,
 			description: info,
 			price: price,
-			foodTypeId: foodTypeId,
-			vegetarian: vegetarian
+			vegetarian: vegetarian,
+			foodTypeId: foodTypeId
+
 		})
 	};
 

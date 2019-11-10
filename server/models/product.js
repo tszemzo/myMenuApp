@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   Product.associate = function(models) {
     // associations can be defined here
     Product.hasMany(models.Images)
+    Product.belongsTo(models.FoodTypes,{foreignKey: "foodTypeId"})
     Product.belongsToMany(models.ActivePrinciples,{
       through: {
         model: models.ProductActivePrinciple,

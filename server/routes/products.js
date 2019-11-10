@@ -39,6 +39,7 @@ router.post('/', function(req, res){
 	let {name, price, vegetarian, info, activePrinciples, foodTypeId} = req.body
 	let images = req.body.img;
 	console.log(req.body)
+
 	productsRepository.addNewProduct(name, info, price, vegetarian, foodTypeId).then((product) => {
 		var productId = product.id;
 		if(images)
