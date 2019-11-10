@@ -170,7 +170,7 @@ class PrincipleModal extends React.Component {
           open={this.props.open}
         >
           <DialogTitle id="customized-dialog-title" onClose={this.props.handleClose}>
-            Principio: {this.props.product.name}
+            Categoria: {this.props.product.name}
           </DialogTitle>
           <DialogContent>
             
