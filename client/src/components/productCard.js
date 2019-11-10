@@ -15,7 +15,7 @@ class ProductCard extends React.Component {
   constructor(props){
     super(props);
     this.state = { show: false};
-    this.state.mainImage = (props.product.images.length)? props.product.images[0] : "https://5.imimg.com/data5/RE/SD/MY-3773531/pharmaceutical-product-500x500.jpg"
+    this.state.mainImage = (props.product.images.length)? props.product.images[0] : "https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-855098134.jpg"
   }
   closeDialog(){
     this.setState({ show: false, showPrinciple: false });
@@ -37,18 +37,24 @@ class ProductCard extends React.Component {
           <CardActionArea>
             <CardMedia
               component="img"
-              alt="Pharma Prod"
+              alt="Plato"
               className={classes.media}
               height="140"
               src={this.state.mainImage}
-              title="Producto Farmaceutico"
+              title="Plato"
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
                 {product.name}
               </Typography>
+              <Typography gutterBottom variant="h6" component="h2">
+                ${product.price}
+              </Typography>
               <Typography component="p">
                 {product.description}
+              </Typography>
+              <Typography component="p">
+                Vegetarianos/celiacos: {product.vegetarian}
               </Typography>
             </CardContent>
           </CardActionArea>

@@ -33,7 +33,7 @@ class ProductsRepo {
 		});
 	};
 
-	changeProductData( productId, name, code, info, activePrinciples, images, formats){
+	changeProductData( productId, name, info, price, vegetarian, activePrinciples, images, formats){
 		let _self = this
 		return Products.findOne({
 			where: {
@@ -49,8 +49,9 @@ class ProductsRepo {
 		}).then(product => {
 			let newData = {
 				name: name,
-				code: code,
-				description: info
+				description: info,
+				price: price,
+				vegetarian: vegetarian
 			}
 			product.update(newData).then(product => {
 				let removedPrincipleList = []
@@ -140,11 +141,12 @@ class ProductsRepo {
 		return ProductActivePrinciple.bulkCreate(newRegisters)
 	}
 
-	addNewProduct(name, code, info){
+	addNewProduct(name, info, price, vegetarian){
 		return Products.create({
 			name: name,
-			code: code,
-			description: info
+			description: info,
+			price: price,
+			vegetarian: vegetarian
 		})
 	};
 

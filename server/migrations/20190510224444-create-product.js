@@ -12,11 +12,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      code: {
+      description: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      description: {
+      price: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      vegetarian: {
         allowNull: false,
         type: Sequelize.STRING
       },
