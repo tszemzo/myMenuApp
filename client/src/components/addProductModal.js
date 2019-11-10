@@ -30,18 +30,23 @@ import CloudUploadOutlineIcon from '@material-ui/icons/CloudUpload';
 import Divider from '@material-ui/core/Divider';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import config from '../config/config';
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 const server_url = config.server_url;
 
 const styles = {
-  card: {
-    maxWidth: 350,
-  },
-  media: {
-    objectFit: 'cover',
-  },
-  buttonDelete:{
-    color: 'tomato'
-  }
+	card: {
+		maxWidth: 350,
+	},
+	media: {
+		objectFit: 'cover',
+	},
+	buttonDelete:{
+		color: 'tomato'
+	},
+	formControl: {
+		minWidth: 120,
+	},
 };
 
 
@@ -94,7 +99,6 @@ class AddProductModal extends React.Component {
 		this.state = {
 			name: '',
 			price: '',
-			vegetarian: '',
 			info: '',
 			foodTypeId: 0,
 			img: [],
@@ -175,11 +179,9 @@ class AddProductModal extends React.Component {
 			this.setState({
 				name: product.name,
 				price: product.price,
-				vegetarian: product.vegetarian,
 				info: product.description,
 				img: product.images,
 				foodTypeId: product.foodTypeId,
-				format: product.formats,
 				activePrinciples: principlesNames,
 				selectedPrinciples: principlesId
 			})
@@ -222,11 +224,9 @@ class AddProductModal extends React.Component {
 			id: this.props.product.id,
 		    name: this.state.name,
 			price: this.state.price,
-			vegetarian: this.state.vegetarian,
 			foodTypeId: this.state.foodTypeId,
 			info: this.state.info,
 			img:  this.state.img,
-			format: this.state.format,
 			activePrinciples: this.state.selectedPrinciples,
 		};
 		console.log(product);
@@ -239,7 +239,6 @@ class AddProductModal extends React.Component {
 		})
 		.then(res => res.json())
 		.then(res => {
-		  console.log(res,123);
 		  this.props.onAdd(res)
 		})
 		.catch(err => {
@@ -251,7 +250,6 @@ class AddProductModal extends React.Component {
 		let product = {
 		    name: this.state.name,
 			price: this.state.price,
-			vegetarian: this.state.vegetarian,
 			info: this.state.info,
 			img:  this.state.img,
 			foodTypeId: this.state.foodTypeId,
@@ -262,11 +260,9 @@ class AddProductModal extends React.Component {
 		this.setState({
 					name: '',
 					price: '',
-					vegetarian: '',
 					info: '',
-					foodTypeId:0
+					foodTypeId: 0,
 					img: [],
-					format: [],
 					activePrinciples: [],
 					selectedPrinciples: []
 				})
@@ -279,7 +275,6 @@ class AddProductModal extends React.Component {
 		})
 		.then(res => res.json())
 		.then(res => {
-		  console.log(res,123);
 		  this.props.onAdd(res)
 		})
 		.catch(err => {
@@ -342,17 +337,23 @@ class AddProductModal extends React.Component {
 			              onChange={this.handleInputChange}
 			              />
 			            </FormControl>
-			            <FormControl margin="normal" required fullWidth>
-			              <InputLabel htmlFor="textarea">Apto vegetarianos/celíacos</InputLabel>
-			              <Input name="vegetarian"
-			              type="vegetarian"
-			              autoComplete='off'
-			              value={this.state.vegetarian}
-			              multiline={true} 
-			              id="vegetarian"
-			              onChange={this.handleInputChange}
-			              />
-			            </FormControl>
+
+						<FormControl className={classes.formControl}>
+							<InputLabel id="demo-simple-select-label">Tipo de plato</InputLabel>
+							<Select
+                                name="foodTypeId"
+								labelId="demo-simple-select-label"
+								id="demo-simple-select"
+								value={this.state.foodTypeId}
+								onChange={this.handleInputChange}
+							>
+								<MenuItem value={1}>Entrada</MenuItem>
+								<MenuItem value={2}>Plato Principal</MenuItem>
+								<MenuItem value={3}>Postre</MenuItem>
+								<MenuItem value={4}>Guarnicion</MenuItem>
+								<MenuItem value={5}>Bebida</MenuItem>
+							</Select>
+						</FormControl>
 
 			            <div style={{margin: '10px'}} className={classes.list}>
 				            {this.state.img.map((img, idx) => (
