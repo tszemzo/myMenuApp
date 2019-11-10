@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import Avatar from '@material-ui/core/Avatar';
 import ImageIcon from '@material-ui/icons/Image';
 import WorkIcon from '@material-ui/icons/Work';
@@ -110,14 +111,13 @@ class AddProductModal extends React.Component {
 			}
 		})
 		.then(response => {
-			return response.json()
+			return response.clone().json()
 		})
 		.then(data => {
 			// var newprod = {name: data.products[0].name}
 			// data.products.push(product
-			console.log(data.principles)
-			this.setState({ 
-				principios : data.principles,
+			this.setState({
+				activePrinciples: data.principles
 			});
 		})
 		.catch((err) => {
@@ -126,13 +126,10 @@ class AddProductModal extends React.Component {
 	}
 
 	setActivePrinciple(id, principle){
-		console.log("HOLA", this.state)
-		const { activePrinciples, selectedPrinciples} = this.state
-		let auxPrinc = activePrinciples
-		let auxIds = selectedPrinciples
-		auxPrinc[id]=principle.name
-		auxIds[id]=principle.id
-		this.setState({ activePrinciples: auxPrinc, selectedPrinciples: auxIds,principlesSuggestions: false})
+		const {selectedPrinciples} = this.state
+		let auxSelectedPrinciples = selectedPrinciples
+		auxSelectedPrinciples[id]=principle //agrego la categoria a las seleccionadas
+		this.setState({ selectedPrinciples: auxSelectedPrinciples,principlesSuggestions: false})
 	}
 
 	renderSuggestions(idx){
@@ -141,13 +138,19 @@ class AddProductModal extends React.Component {
 				<Paper>
 				<List component="nav" aria-label="Secondary mailbox folders">
 					{
-						this.state.principios.map((principio,i) => {
-							if(principio.name.toLowerCase().includes(this.state.activePrinciples[idx].toLowerCase()))
-						        return(
-						        	<ListItem key={i} onClick={() => {this.setActivePrinciple(idx, principio)}} button>
-						        					          <ListItemText  primary={principio.name} />
-	    					        </ListItem>
-	    					        )
+						this.state.activePrinciples.map((categoria,i) => {
+							if(!this.state.selectedPrinciples.includes(categoria)){
+								return(
+									<ListItem key={i} onClick={() => {this.setActivePrinciple(idx, categoria)}} button>
+										<ListItemText  primary={categoria.name} />
+									</ListItem>
+								)
+							}else{
+								return(//si ya lo selecciono no es clickeable
+									<ListSubheader>{categoria.name}</ListSubheader>
+								)
+							}
+
 						})
 					}
 			      </List>
@@ -387,26 +390,26 @@ class AddProductModal extends React.Component {
 			            </div>
 
 			            <div className={classes.list}>
-				            {this.state.activePrinciples.map((img, idx) => (
+				            {this.state.selectedPrinciples.map((selectedCategory, idx) => (
 					          	<FormControl margin="normal" >
-					          	<div className="listInput" >
-				              		<InputLabel htmlFor="text">Categoria {idx + 1}</InputLabel>
-						            <InputBase
-						              className={classes.inputInList}
-						              name="activePrinciples"
-						              autoComplete='off'
-						              placeholder={`Categoria ${idx + 1}`}
-						              onFocus={() => {this.setState({ selectedForm : idx, principlesSuggestions: true})}}
-						              
-						              value={img}
-						              onChange={this.handleInputListChange(idx)}
-						            />
+									<div className="listInput" >
+
+									<InputLabel  htmlFor="text">Categoria {idx + 1}</InputLabel>
+									<InputBase
+									className={classes.inputInList}
+									name="activePrinciples"
+									autoComplete='off'
+									placeholder={`Categoria ${idx + 1}`}
+									onFocus={() => {this.setState({ selectedForm : idx, principlesSuggestions: true})}}
+									value={selectedCategory}
+									onChange={this.handleInputListChange(idx)}
+									/>
 						            <IconButton className={classes.iconButton}
 						              type="button"
-						              onClick={this.handleRemoveList(idx, ['activePrinciples','selectedPrinciples'])}
+						              onClick={this.handleRemoveList(idx, ['selectedPrinciples'])}
 						              className="small"
 						            >
-								        <RemoveCircleIcon />
+									        <RemoveCircleIcon />
 								    </IconButton>
 								    {this.renderSuggestions(idx)}
 					          	</div>
@@ -417,7 +420,7 @@ class AddProductModal extends React.Component {
 					          fullWidth
 					          variant="outlined"
 					          color="secondary"
-					          onClick={this.handleAddList('activePrinciples')}
+					          onClick={this.handleAddList('selectedPrinciples')}
 					          className="small"
 					        >
 					          Agregar Categoria
