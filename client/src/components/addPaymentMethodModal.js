@@ -94,10 +94,12 @@ class AddPaymentMethodModal extends React.Component {
 		this.state = {
 			name: '',
 			paymentImage: '',
-			/*img: [],
+			img: [],
+			/*
 			format: [],
-			activePrinciples: [],
 			*/
+			activePrinciples: [],
+			
 			selectedPrinciples: []
 
 		}
