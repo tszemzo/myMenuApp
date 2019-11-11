@@ -268,7 +268,7 @@ class AddPaymentMethodModal extends React.Component {
 					selectedPrinciples: []
 					*/
 				})
-		fetch(server_url + '/method', {
+		fetch(server_url + '/methods', {
 		  method: 'post',
 		  headers: {
 		    'Content-Type': 'application/json'
