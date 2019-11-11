@@ -115,46 +115,61 @@ class Home extends React.Component{
 		const { classes } = this.props;
 		return(
 			<div>
-				<div style={{marginTop: 100}}>
-					<Typography variant="h4" gutterBottom>
-						Entradas
-					</Typography>
-					<div className={classes.products}>
+				<div className={classes.container}>
+					<div className={classes.title} style={{display:"flex"}}>
+						<Typography gutterBottom variant="h4" component="h2">
+							Entradas
+						</Typography>
+					</div>
+
+					<div className={classes.products} >
 						{this.renderFoodTypeProducts(1)}
 					</div>
 				</div>
 				<div>
-					<Typography variant="h4" gutterBottom>
-						Platos Principales
-					</Typography>
+					<div className={classes.title} style={{display:"flex"}}>
+						<Typography gutterBottom variant="h4" component="h2">
+							Platos Principales
+						</Typography>
+					</div>
 					<div className={classes.products}>
 						{this.renderFoodTypeProducts(2)}
 					</div>
 				</div>
-				<div>
-					<Typography variant="h4" gutterBottom>
-						Postre
-					</Typography>
+
+				<div className={classes.container}>
+					<div className={classes.title} style={{display:"flex"}}>
+						<Typography gutterBottom variant="h4" component="h2">
+							Postre
+						</Typography>
+					</div>
 					<div className={classes.products}>
 						{this.renderFoodTypeProducts(3)}
 					</div>
 				</div>
-				<div>
-					<Typography variant="h4" gutterBottom>
-						Guarniciones
-					</Typography>
+
+				<div className={classes.container}>
+					<div className={classes.title} style={{display:"flex"}}>
+						<Typography gutterBottom variant="h4" component="h2">
+							Guarnicion
+						</Typography>
+					</div>
 					<div className={classes.products}>
 						{this.renderFoodTypeProducts(4)}
 					</div>
 				</div>
-				<div>
-					<Typography variant="h4" gutterBottom>
-						Bebidas
-					</Typography>
+
+				<div className={classes.container}>
+					<div className={classes.title} style={{display:"flex"}}>
+						<Typography gutterBottom variant="h4" component="h2">
+							Bebidas
+						</Typography>
+					</div>
 					<div className={classes.products}>
-						{this.renderFoodTypeProducts(4)}
+						{this.renderFoodTypeProducts(5)}
 					</div>
 				</div>
+
 			</div>
 		)
 	}
@@ -190,8 +205,9 @@ class Home extends React.Component{
 	}
 
 	renderFoodTypeProducts(foodTypeId) {
+		const { classes } = this.props;
 		return (
-			<div>
+			<div className={classes.products}>
 				{
 					this.state.products.map((product, i) =>{
 						if(product.name.toLowerCase().includes(this.state.search.toLowerCase())
@@ -225,7 +241,7 @@ const styles = theme => ({
 	products: {
 		display: 'flex',
 		flexFlow: 'row wrap',
-		marginTop: '70px',
+		marginTop: '0px',
 	},
 });
 
