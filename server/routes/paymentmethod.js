@@ -56,24 +56,9 @@ router.delete('/:id', function(req, res) {
   
 });
 
-router.delete('/methods', function(req, res) {
-  
-  paymentMethodRepo.deletePaymentMethods().then( result => {
 
-  res.json({
-    result: result
-  });
 
-  }).catch((err) => {
-    res.status(err.code);
-    res.json({
-      error: err
-  });
-  })
-  
-});
-
-router.post('/method', function(req, res) {
+router.post('/', function(req, res) {
   let {name, paymentImage} = req.body;
 
   paymentMethodRepo.createPaymentMethod(name, paymentImage).then(result => {
@@ -85,7 +70,7 @@ router.post('/method', function(req, res) {
 	})
 })
 
-router.put('/method', function(req, res) {
+router.put('/:id', function(req, res) {
 	paymentMethodRepo.updatePaymentMethod(req.body).then( result => {
 		res.json({
 			method: result,
