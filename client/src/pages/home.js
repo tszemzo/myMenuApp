@@ -2,8 +2,11 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ProductCard from '../components/productCard';
+<<<<<<< HEAD
 import MethodCard from '../components/methodCard';
 import MenuAppBar from '../components/menuAppBar';
+=======
+>>>>>>> e050dec742d67e3a0b7bb16114fade870d39fa9f
 import SearchAppBar from '../components/searchAppBar';
 import TabNav from '../components/tabNav';
 import config from '../config/config';
@@ -11,16 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddProductModal from '../components/addProductModal';
 import AddBox from '@material-ui/icons/AddBox';
 
-import Anime from 'react-anime';
 
-var product = {
-	name: 'Nombre',
-	code: '1a5-32f3-54ff5',
-	info: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-	img: ['https://5.imimg.com/data5/RE/SD/MY-3773531/pharmaceutical-product-500x500.jpg',''],
-	format: ['70ml'],
-	activePrinciples: ['Guido'],
-}
 
 const server_url = config.server_url;
 
@@ -78,15 +72,12 @@ class Home extends React.Component{
 			method: 'get',
 			headers: {
 				'Content-Type':'application/json',
-				// 'Authorization': authToken.getToken(),
 			}
 		})
 		.then(response => response.json())
 		.then(data => {
 			console.log(this.state.products);
 			console.log(data.products[0]);
-			// var newprod = {name: data.products[0].name}
-			// data.products.push(product)
 			this.setState({ 
 				products : data.products,
 			});
@@ -147,10 +138,75 @@ class Home extends React.Component{
 		return(
 			<div className={classes.container}>
 				<TabNav tabs={this.state.tabs}/>
+				<div className={classes.container}>
+					<div>
+						<div style={{marginTop: 100}} >
+							<Typography variant="h4" gutterBottom>
+									Entradas
+							</Typography>
+						</div>
+						<div className={classes.products}>
+							{this.renderFoodTypeProducts(1)}
+						</div>
+					</div>
+					<div>
+						<Typography variant="h4" gutterBottom>
+							Platos Principales
+						</Typography>
+						<div className={classes.products}>
+							{this.renderFoodTypeProducts(2)}
+						</div>
+					</div>
+					<div>
+						<Typography variant="h4" gutterBottom>
+							Postre
+						</Typography>
+						<div className={classes.products}>
+							{this.renderFoodTypeProducts(3)}
+						</div>
+					</div>
+					<div>
+						<Typography variant="h4" gutterBottom>
+							Guarniciones
+						</Typography>
+						<div className={classes.products}>
+							{this.renderFoodTypeProducts(4)}
+						</div>
+					</div>
+					<div>
+						<Typography variant="h4" gutterBottom>
+							Bebidas
+						</Typography>
+						<div className={classes.products}>
+							{this.renderFoodTypeProducts(4)}
+						</div>
+					</div>
 
+
+
+				</div>
 				<SearchAppBar stateKey="search" search={this.state.search} onTextChange={this.handleTextChange.bind(this)}/>
 			</div>
 		)
+	}
+
+	renderFoodTypeProducts(foodTypeId) {
+		return (
+			<div>
+				{
+					this.state.products.map((product, i) =>{
+						if(product.name.toLowerCase().includes(this.state.search.toLowerCase())
+							&& product.foodTypeId==foodTypeId)
+							return(
+								<div key={i}>
+									<ProductCard editable={false} product={product}/>
+								</div>
+							)
+
+					})
+				}
+			</div>
+		);
 	}
 }
 

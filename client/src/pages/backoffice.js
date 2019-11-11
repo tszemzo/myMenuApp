@@ -8,12 +8,14 @@ import TabNav from '../components/tabNav';
 import AddPrincipleModal from '../components/addPrincipleModal';
 import SearchAppBar from '../components/searchAppBar';
 import ProductCard from '../components/productCard';
+import MethodCard from '../components/methodCard';
 import PrincipleCard from '../components/principleCard';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import AddProductModal from '../components/addProductModal';
+import AddPaymentMethodModal from '../components/addPaymentMethodModal';
 import config from '../config/config';
 
 const server_url = config.server_url;
@@ -21,19 +23,24 @@ class Backoffice extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			tabs:[{
+			tabs:[
+			{
+				label: 'Categorias',
+				renderer: this.renderActivePrinciplesBackoffice.bind(this)
+			},
+			{
 				label: 'Platos',
 				renderer: this.renderProductsBackoffice.bind(this)
 			},{
 				label: 'Menues',
-				renderer: this.renderActivePrinciplesBackoffice.bind(this)
+				renderer:  this.renderPaymentMethodsBackoffice.bind(this)
 			},
 			{
 				label: 'Métodos de pago',
 				renderer: this.renderPaymentMethodsBackoffice.bind(this)
 			}],
 			products: [],
-			payment_methods: [], 
+			paymentMethods: [],
 			activePrinciples: [],
 			search: '',
 			addProductShow:false,
@@ -65,7 +72,7 @@ class Backoffice extends Component{
 	}
 
 	getPaymentMethods(){
-		fetch(server_url + '/paymentmethod', {
+		fetch(server_url + '/methods', {
 			method: 'get',
 			headers: {
 				'Content-Type':'application/json',
@@ -74,11 +81,9 @@ class Backoffice extends Component{
 		})
 		.then(response => response.json())
 		.then(data => {
-			// var newprod = {name: data.products[0].name}
-			// data.products.push(product)
 			console.log(data.methods)
 			this.setState({
-				payment_methods : data.methods,
+				paymentMethods : data.methods,
 			});
 		})
 		.catch((err) => {
@@ -117,9 +122,9 @@ class Backoffice extends Component{
 	}
 
 	handleMethodAdd(method){
-		let newList = this.state.payment_methods
+		let newList = this.state.paymentMethods
 		newList.unshift(method)
-		this.setState({ payment_methods : newList})
+		this.setState({ paymentMethods : newList})
 	}
 
 	handlePrincipleAdd(principle){
@@ -140,7 +145,7 @@ class Backoffice extends Component{
 	closePrincipleDialog(){
     	this.setState({ addPrincipleShow: false });
 	}
-	closePaymentMethodDiaglo(){
+	closePaymentMethodDialog(){
     	this.setState({ addPaymentMethodShow: false });
 	}
 	handleTextChange= name => event => {
@@ -167,11 +172,11 @@ class Backoffice extends Component{
 	}
 	onPaymentMethodDelete(deletedPaymentMethod){
 		let newMethods = []
-		this.state.payment_methods.forEach(payment_method => {
-			if(deletedPaymentMethod.id !=payment_method.id)
-				newMethods.push(payment_method)
+		this.state.paymentMethods.forEach(method => {
+			if(method.id !=method.id)
+				newMethods.push(method)
 		})
-		this.setState({payment_methods: newMethods})
+		this.setState({paymentMethods: newMethods})
 	}
 	renderPaymentMethodsBackoffice(){
 		return(
@@ -180,24 +185,26 @@ class Backoffice extends Component{
 							<Typography variant="h4">
 								Métodos de pago
 							</Typography>
-							<IconButton onClick={() => this.setState({addProductShow: true})}>
+							<IconButton onClick={() => this.setState({addPaymentMethodShow: true})}>
 								<AddBox color="primary"/>
 							</IconButton>
 						</div>
 						<div style={styles.cardBody}>
 						{
-							this.state.products.map((product, i) =>{
-								if(product.name.toLowerCase().includes(this.state.search.toLowerCase()))
+
+							this.state.paymentMethods.map((method, i) =>{
+								if(method.name.toLowerCase().includes(this.state.search.toLowerCase()))
 								return(
 									<div key={i}>
-			                    		<ProductCard editable={true} onDelete={this.onProductDelete.bind(this)} product={product} />
+			                    		<MethodCard editable={true} onDelete={this.onPaymentMethodDelete.bind(this)} method={method} />
 			                    	</div>
 								)
 
 							})
 						}
 			</div>
-			<AddProductModal open={this.state.addProductShow} onAdd={this.handleProductAdd.bind(this)} handleClose={this.closeProductDialog.bind(this)}/>
+			<AddPaymentMethodModal open={this.state.addPaymentMethodShow} onAdd={this.handleMethodAdd.bind(this)} handleClose={this.closePaymentMethodDialog.bind(this)}/>
+
 			</div>
 		)
 	}
@@ -237,7 +244,7 @@ class Backoffice extends Component{
 			<div>
 			<div style={styles.cardHeader}>
 							<Typography variant="h4">
-								Menus
+								Categorias
 							</Typography>
 							<IconButton onClick={() => this.setState({addPrincipleShow: true})}>
 								<AddBox color="primary"/>

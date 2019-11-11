@@ -14,7 +14,6 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import Avatar from '@material-ui/core/Avatar';
 import ImageIcon from '@material-ui/icons/Image';
 import WorkIcon from '@material-ui/icons/Work';
@@ -30,23 +29,18 @@ import CloudUploadOutlineIcon from '@material-ui/icons/CloudUpload';
 import Divider from '@material-ui/core/Divider';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import config from '../config/config';
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 const server_url = config.server_url;
 
 const styles = {
-	card: {
-		maxWidth: 350,
-	},
-	media: {
-		objectFit: 'cover',
-	},
-	buttonDelete:{
-		color: 'tomato'
-	},
-	formControl: {
-		minWidth: 120,
-	},
+  card: {
+    maxWidth: 350,
+  },
+  media: {
+    objectFit: 'cover',
+  },
+  buttonDelete:{
+    color: 'tomato'
+  }
 };
 
 
@@ -92,19 +86,22 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 
-class AddProductModal extends React.Component {
+//class AddProductModal extends React.Component {
+class AddPaymentMethodModal extends React.Component {
 
   	constructor(props){
 		super(props);
 		this.state = {
 			name: '',
-			price: '',
-			info: '',
-			foodTypeId: 0,
+			paymentImage: '',
 			img: [],
+			/*
 			format: [],
+			*/
 			activePrinciples: [],
+			
 			selectedPrinciples: []
+
 		}
 	}
 
@@ -117,13 +114,14 @@ class AddProductModal extends React.Component {
 			}
 		})
 		.then(response => {
-			return response.clone().json()
+			return response.json()
 		})
 		.then(data => {
 			// var newprod = {name: data.products[0].name}
 			// data.products.push(product
-			this.setState({
-				activePrinciples: data.principles
+			console.log(data.principles)
+			this.setState({ 
+				principios : data.principles,
 			});
 		})
 		.catch((err) => {
@@ -132,10 +130,13 @@ class AddProductModal extends React.Component {
 	}
 
 	setActivePrinciple(id, principle){
-		const {selectedPrinciples} = this.state
-		let auxSelectedPrinciples = selectedPrinciples
-		auxSelectedPrinciples[id]=principle //agrego la categoria a las seleccionadas
-		this.setState({ selectedPrinciples: auxSelectedPrinciples,principlesSuggestions: false})
+		console.log("HOLA", this.state)
+		const { activePrinciples, selectedPrinciples} = this.state
+		let auxPrinc = activePrinciples
+		let auxIds = selectedPrinciples
+		auxPrinc[id]=principle.name
+		auxIds[id]=principle.id
+		this.setState({ activePrinciples: auxPrinc, selectedPrinciples: auxIds,principlesSuggestions: false})
 	}
 
 	renderSuggestions(idx){
@@ -144,21 +145,13 @@ class AddProductModal extends React.Component {
 				<Paper>
 				<List component="nav" aria-label="Secondary mailbox folders">
 					{
-						this.state.activePrinciples.map((categoria,i) => {
-							if(!this.state.selectedPrinciples.includes(categoria)){
-								return(
-									<ListItem key={i} onClick={() => {
-										this.setActivePrinciple(idx, categoria)}
-									} button>
-										<ListItemText  primary={categoria.name} />
-									</ListItem>
-								)
-							}else{
-								return(//si ya lo selecciono no es clickeable
-									<ListSubheader>{categoria.name}</ListSubheader>
-								)
-							}
-
+						this.state.principios.map((principio,i) => {
+							if(principio.name.toLowerCase().includes(this.state.activePrinciples[idx].toLowerCase()))
+						        return(
+						        	<ListItem key={i} onClick={() => {this.setActivePrinciple(idx, principio)}} button>
+						        					          <ListItemText  primary={principio.name} />
+	    					        </ListItem>
+	    					        )
 						})
 					}
 			      </List>
@@ -168,22 +161,24 @@ class AddProductModal extends React.Component {
 	}
 	componentDidMount(){
 		this.setPrinciples()
-		if(this.props.product){
-			const { product } = this.props
+		if(this.props.payment_method){
+			const { payment_method } = this.props
 			let principlesNames = []
 			let principlesId = []
-			product.ActivePrinciples.forEach(principle => {
+			payment_method.ActivePrinciples.forEach(principle => {
 				principlesNames.push(principle.name)
 				principlesId.push(principle.id)
 			})
 			this.setState({
-				name: product.name,
-				price: product.price,
+				name: payment_method.name,
+				paymentImage: payment_method.paymentImage/*,
+				vegetarian: product.vegetarian,
 				info: product.description,
 				img: product.images,
-				foodTypeId: product.foodTypeId,
+				format: product.formats,
 				activePrinciples: principlesNames,
 				selectedPrinciples: principlesId
+				*/
 			})
 		}
 	}
@@ -220,25 +215,29 @@ class AddProductModal extends React.Component {
 		})
 	};
 	editOld(){
-		let product = {
-			id: this.props.product.id,
+		let payment_method = {
+			id: this.props.payment_method.id,
 		    name: this.state.name,
-			price: this.state.price,
-			foodTypeId: this.state.foodTypeId,
+			paymentImage: this.state.paymentImage/*,
+			vegetarian: this.state.vegetarian,
 			info: this.state.info,
 			img:  this.state.img,
+			format: this.state.format,
 			activePrinciples: this.state.selectedPrinciples,
+			*/
 		};
-		console.log(product);
-		fetch(server_url + '/product/'+this.props.product.id, {
+		console.log(payment_method);
+		/*fetch(server_url + '/product/'+this.props.product.id, {*/
+		fetch(server_url + '/paymentmethod/'+this.props.payment_method.id, {
 		  method: 'put',
 		  headers: {
 		    'Content-Type': 'application/json'
 		  },
-		  body: JSON.stringify(product),
+		  body: JSON.stringify(payment_method),
 		})
 		.then(res => res.json())
 		.then(res => {
+		  console.log(res,123);
 		  this.props.onAdd(res)
 		})
 		.catch(err => {
@@ -247,34 +246,38 @@ class AddProductModal extends React.Component {
 
 	}
 	createNew(){
-		let product = {
+		let payment_method = {
 		    name: this.state.name,
-			price: this.state.price,
+			paymentImage: this.state.paymentImage/*,
+			vegetarian: this.state.vegetarian,
 			info: this.state.info,
 			img:  this.state.img,
-			foodTypeId: this.state.foodTypeId,
 			format: this.state.format,
-			activePrinciples: this.state.selectedPrinciples.map((value) =>value.id),
+			activePrinciples: this.state.selectedPrinciples,
+			*/
 		};
-		console.log(product);
+		console.log(payment_method);
 		this.setState({
 					name: '',
-					price: '',
+					paymentImage: ''/*,
+					vegetarian: '',
 					info: '',
-					foodTypeId: 0,
 					img: [],
+					format: [],
 					activePrinciples: [],
 					selectedPrinciples: []
+					*/
 				})
-		fetch(server_url + '/product', {
+		fetch(server_url + '/method', {
 		  method: 'post',
 		  headers: {
 		    'Content-Type': 'application/json'
 		  },
-		  body: JSON.stringify(product),
+		  body: JSON.stringify(payment_method),
 		})
 		.then(res => res.json())
 		.then(res => {
+		  console.log(res,123);
 		  this.props.onAdd(res)
 		})
 		.catch(err => {
@@ -285,7 +288,7 @@ class AddProductModal extends React.Component {
 	onSubmit = (event) => {
 		event.preventDefault();
 		console.log("HOLA ON SUBMIT")
-		if(this.props.product)
+		if(this.props.payment_method)
 			this.editOld()
 		else
 			this.createNew()
@@ -304,7 +307,7 @@ class AddProductModal extends React.Component {
 						<CloudUploadOutlineIcon />
 					</Avatar>
 					<Typography component="h1" variant="h5">
-						Subir un producto
+						Subir un metodo de pago
 					</Typography>
 					<form className={classes.form} onSubmit={this.onSubmit}>
 			            <FormControl margin="normal" required fullWidth>
@@ -316,44 +319,7 @@ class AddProductModal extends React.Component {
 			              value={this.state.name}
 			              autoFocus />
 			            </FormControl>
-			            <FormControl margin="normal" required fullWidth>
-			              <InputLabel htmlFor="text">Precio</InputLabel>
-			              <Input name="price"
-			              type="number"
-			              autoComplete='off'
-			              id="price"
-			              onChange={this.handleInputChange}
-			              value={this.state.price}
-			              />
-			            </FormControl>
-			            <FormControl margin="normal" required fullWidth>
-			              <InputLabel htmlFor="textarea">Descripción</InputLabel>
-			              <Input name="info"
-			              type="info"
-			              autoComplete='off'
-			              value={this.state.info}
-			              multiline={true} 
-			              id="info"
-			              onChange={this.handleInputChange}
-			              />
-			            </FormControl>
-
-						<FormControl className={classes.formControl}>
-							<InputLabel id="demo-simple-select-label">Tipo de plato</InputLabel>
-							<Select
-                                name="foodTypeId"
-								labelId="demo-simple-select-label"
-								id="demo-simple-select"
-								value={this.state.foodTypeId}
-								onChange={this.handleInputChange}
-							>
-								<MenuItem value={1}>Entrada</MenuItem>
-								<MenuItem value={2}>Plato Principal</MenuItem>
-								<MenuItem value={3}>Postre</MenuItem>
-								<MenuItem value={4}>Guarnicion</MenuItem>
-								<MenuItem value={5}>Bebida</MenuItem>
-							</Select>
-						</FormControl>
+			            
 
 			            <div style={{margin: '10px'}} className={classes.list}>
 				            {this.state.img.map((img, idx) => (
@@ -391,24 +357,26 @@ class AddProductModal extends React.Component {
 			            </div>
 
 			            <div className={classes.list}>
-				            {this.state.selectedPrinciples.map((selectedCategory, idx) => (
+				            {this.state.activePrinciples.map((img, idx) => (
 					          	<FormControl margin="normal" >
-									<div className="listInput" >
-									<InputBase
-									className={classes.inputInList}
-									name="selectedPrinciples"
-									autoComplete='off'
-									placeholder={`Categoria? ${idx + 1}`}
-									onFocus={() => {this.setState({ selectedForm : idx, principlesSuggestions: true})}}
-									value={selectedCategory.name}
-									//onChange={this.handleInputListChange(idx)}
-									/>
+					          	<div className="listInput" >
+				              		<InputLabel htmlFor="text">Categoria {idx + 1}</InputLabel>
+						            <InputBase
+						              className={classes.inputInList}
+						              name="activePrinciples"
+						              autoComplete='off'
+						              placeholder={`Categoria ${idx + 1}`}
+						              onFocus={() => {this.setState({ selectedForm : idx, principlesSuggestions: true})}}
+						              
+						              value={img}
+						              onChange={this.handleInputListChange(idx)}
+						            />
 						            <IconButton className={classes.iconButton}
 						              type="button"
-						              onClick={this.handleRemoveList(idx, ['selectedPrinciples'])}
+						              onClick={this.handleRemoveList(idx, ['activePrinciples','selectedPrinciples'])}
 						              className="small"
 						            >
-									        <RemoveCircleIcon />
+								        <RemoveCircleIcon />
 								    </IconButton>
 								    {this.renderSuggestions(idx)}
 					          	</div>
@@ -420,7 +388,7 @@ class AddProductModal extends React.Component {
 					          fullWidth
 					          variant="outlined"
 					          color="secondary"
-					          onClick={this.handleAddList('selectedPrinciples')}
+					          onClick={this.handleAddList('activePrinciples')}
 					          className="small"
 					        >
 					          Agregar Categoria
@@ -447,10 +415,10 @@ class AddProductModal extends React.Component {
 
 
 
-AddProductModal.propTypes = {
+AddPaymentMethodModal.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
 
 
-export default withStyles(styles)(AddProductModal);
+export default withStyles(styles)(AddPaymentMethodModal);
