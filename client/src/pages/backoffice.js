@@ -192,7 +192,7 @@ class Backoffice extends Component{
 						<div style={styles.cardBody}>
 						{
 
-							this.state.payment_methods.map((method, i) =>{
+							this.state.paymentMethods.map((method, i) =>{
 								if(method.name.toLowerCase().includes(this.state.search.toLowerCase()))
 								return(
 									<div key={i}>
