@@ -2,9 +2,14 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ProductCard from '../components/productCard';
+import MethodCard from '../components/methodCard';
 import MenuAppBar from '../components/menuAppBar';
 import SearchAppBar from '../components/searchAppBar';
+import TabNav from '../components/tabNav';
 import config from '../config/config';
+import IconButton from '@material-ui/core/IconButton';
+import AddProductModal from '../components/addProductModal';
+import AddBox from '@material-ui/icons/AddBox';
 
 import Anime from 'react-anime';
 
@@ -24,9 +29,48 @@ class Home extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
+			tabs:[{
+				label: 'Platos',
+				renderer: this.renderProducts.bind(this)
+
+			},{
+				label: 'Menues',
+				renderer: this.renderProducts.bind(this)
+
+			},
+			{
+				label: 'Métodos de pago',
+				renderer: this.renderMethods.bind(this)
+
+			}],
 			products: [],
-			search: ''
+			payment_methods: [], 
+			activePrinciples: [],
+			search: '',
+			addProductShow:false,
+			addPrincipleShow:false,
+			addPaymentMethodShow:false,
 		}
+	}
+
+	getPaymentMethods(){
+		fetch(server_url + '/methods', {
+			method: 'get',
+			headers: {
+				'Content-Type':'application/json',
+				// 'Authorization': authToken.getToken(),
+			}
+		})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data.methods)
+			this.setState({
+				payment_methods : data.methods,
+			});
+		})
+		.catch((err) => {
+			console.log(err)
+		});
 	}
 
 	getProducts(){
@@ -54,37 +98,56 @@ class Home extends React.Component{
 
 	componentDidMount(){
 		this.getProducts();
+		this.getPaymentMethods();
 	}
 
 	handleTextChange= name => event => {
 	    this.setState({ [name] : event.target.value });
 	};
 
+	renderProducts(){
+		const { classes } = this.props;
+		return(
+			<div className={classes.products}>
+				{
+					this.state.products.map((product, i) =>{
+						if(product.name.toLowerCase().includes(this.state.search.toLowerCase()))
+							return(
+								<div key={i}>
+		                    		<ProductCard editable={false} product={product}/>
+		                    	</div>
+							)
+					})
+				}
+			</div>
+		)
+	}
+
+	renderMethods(){
+		const { classes } = this.props;
+		return(
+			<div className={classes.products}>
+				{
+					this.state.payment_methods.map((method, i) =>{
+						if(method.name.toLowerCase().includes(this.state.search.toLowerCase()))
+							return(
+								<div key={i}>
+		                    		<MethodCard editable={false} method={method}/>
+		                    	</div>
+							)
+					})
+				}
+			</div>
+		)
+	}
+
 
 	render(){
-		let animeProps = {
-	      opacity: [0, 1],
-	      translateY: [-64, 0],
-	      delay: (el, i) => i * 100
-	    };
 		const { classes } = this.props;
 		return(
 			<div className={classes.container}>
-				<div className={classes.products}>
-					{/*<Anime {...animeProps}>*/}
-					{
-						this.state.products.map((product, i) =>{
-							if(product.name.toLowerCase().includes(this.state.search.toLowerCase()))
-								return(
-									<div key={i}>
-			                    		<ProductCard editable={false} product={product}/>
-			                    	</div>
-								)
+				<TabNav tabs={this.state.tabs}/>
 
-						})
-					}
-					{/*</Anime>*/}
-				</div>
 				<SearchAppBar stateKey="search" search={this.state.search} onTextChange={this.handleTextChange.bind(this)}/>
 			</div>
 		)
@@ -102,6 +165,7 @@ const styles = theme => ({
 	},
 	container: {
 		margin: 20,
+		marginTop: 70
 	},
 	products: {
 		display: 'flex',
