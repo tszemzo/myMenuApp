@@ -2,11 +2,8 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ProductCard from '../components/productCard';
-<<<<<<< HEAD
 import MethodCard from '../components/methodCard';
 import MenuAppBar from '../components/menuAppBar';
-=======
->>>>>>> e050dec742d67e3a0b7bb16114fade870d39fa9f
 import SearchAppBar from '../components/searchAppBar';
 import TabNav from '../components/tabNav';
 import config from '../config/config';
@@ -96,20 +93,68 @@ class Home extends React.Component{
 	    this.setState({ [name] : event.target.value });
 	};
 
+	// renderProducts(){
+	// 	const { classes } = this.props;
+	// 	return(
+	// 		<div className={classes.products}>
+	// 			{
+	// 				this.state.products.map((product, i) =>{
+	// 					if(product.name.toLowerCase().includes(this.state.search.toLowerCase()))
+	// 						return(
+	// 							<div key={i}>
+	// 	                    		<ProductCard editable={false} product={product}/>
+	// 	                    	</div>
+	// 						)
+	// 				})
+	// 			}
+	// 		</div>
+	// 	)
+	// }
+
 	renderProducts(){
 		const { classes } = this.props;
 		return(
-			<div className={classes.products}>
-				{
-					this.state.products.map((product, i) =>{
-						if(product.name.toLowerCase().includes(this.state.search.toLowerCase()))
-							return(
-								<div key={i}>
-		                    		<ProductCard editable={false} product={product}/>
-		                    	</div>
-							)
-					})
-				}
+			<div>
+				<div style={{marginTop: 100}}>
+					<Typography variant="h4" gutterBottom>
+						Entradas
+					</Typography>
+					<div className={classes.products}>
+						{this.renderFoodTypeProducts(1)}
+					</div>
+				</div>
+				<div>
+					<Typography variant="h4" gutterBottom>
+						Platos Principales
+					</Typography>
+					<div className={classes.products}>
+						{this.renderFoodTypeProducts(2)}
+					</div>
+				</div>
+				<div>
+					<Typography variant="h4" gutterBottom>
+						Postre
+					</Typography>
+					<div className={classes.products}>
+						{this.renderFoodTypeProducts(3)}
+					</div>
+				</div>
+				<div>
+					<Typography variant="h4" gutterBottom>
+						Guarniciones
+					</Typography>
+					<div className={classes.products}>
+						{this.renderFoodTypeProducts(4)}
+					</div>
+				</div>
+				<div>
+					<Typography variant="h4" gutterBottom>
+						Bebidas
+					</Typography>
+					<div className={classes.products}>
+						{this.renderFoodTypeProducts(4)}
+					</div>
+				</div>
 			</div>
 		)
 	}
@@ -138,53 +183,7 @@ class Home extends React.Component{
 		return(
 			<div className={classes.container}>
 				<TabNav tabs={this.state.tabs}/>
-				<div className={classes.container}>
-					<div>
-						<div style={{marginTop: 100}} >
-							<Typography variant="h4" gutterBottom>
-									Entradas
-							</Typography>
-						</div>
-						<div className={classes.products}>
-							{this.renderFoodTypeProducts(1)}
-						</div>
-					</div>
-					<div>
-						<Typography variant="h4" gutterBottom>
-							Platos Principales
-						</Typography>
-						<div className={classes.products}>
-							{this.renderFoodTypeProducts(2)}
-						</div>
-					</div>
-					<div>
-						<Typography variant="h4" gutterBottom>
-							Postre
-						</Typography>
-						<div className={classes.products}>
-							{this.renderFoodTypeProducts(3)}
-						</div>
-					</div>
-					<div>
-						<Typography variant="h4" gutterBottom>
-							Guarniciones
-						</Typography>
-						<div className={classes.products}>
-							{this.renderFoodTypeProducts(4)}
-						</div>
-					</div>
-					<div>
-						<Typography variant="h4" gutterBottom>
-							Bebidas
-						</Typography>
-						<div className={classes.products}>
-							{this.renderFoodTypeProducts(4)}
-						</div>
-					</div>
 
-
-
-				</div>
 				<SearchAppBar stateKey="search" search={this.state.search} onTextChange={this.handleTextChange.bind(this)}/>
 			</div>
 		)
