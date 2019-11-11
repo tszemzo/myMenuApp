@@ -30,32 +30,26 @@ class ProductsRepo {
 
 	changeProductData( productId, name, info, price, activePrinciples, images, foodTypeId){
 		let _self = this
-		return Products.findOne({
-			where: {
-				id: productId
-			},
-			include:[{
-				model: ActivePrinciples
-			},{
-				model: Images
-			},]
-		}).then(product => {
+		return this.getProduct(productId).then(product => {
 			let newData = {
 				name: name,
 				description: info,
 				price: price,
 				foodTypeId: foodTypeId
 			}
+
 			product.update(newData).then(product => {
 				let removedPrincipleList = []
 				let removedPhotoList = []
+
 				product.Images.forEach(image => {
 					if(images.includes(image.link)){
 						images.splice(images.indexOf(image.link),1)
 					}else{
-						removedPhotoList.push(image.id)
+						removedPhotoList.push(image.link)
 					}
 				})
+
 				product.ActivePrinciples.forEach(principle => {
 					if(activePrinciples.includes(principle.id)){
 						activePrinciples.splice(activePrinciples.indexOf(principle.id),1)
@@ -77,14 +71,14 @@ class ProductsRepo {
 		let newRegisters = []
 		newList.forEach(link => {
 			newRegisters.push({
-				productId,
-				link
+				productId: productId,
+				link : link
 			})
 		})
 		Images.destroy({
 			where:{
 				link: removedList,
-				productId
+				productId: productId
 			}
 		})
 		return Images.bulkCreate(newRegisters)
@@ -102,7 +96,7 @@ class ProductsRepo {
 		ProductActivePrinciple.destroy({
 			where:{
 				activePrincipleId: removedList,
-				productId
+				productId: productId
 			}
 		})
 		return ProductActivePrinciple.bulkCreate(newRegisters)

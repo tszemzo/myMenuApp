@@ -227,9 +227,8 @@ class AddProductModal extends React.Component {
 			foodTypeId: this.state.foodTypeId,
 			info: this.state.info,
 			img:  this.state.img,
-			activePrinciples: this.state.selectedPrinciples,
+			activePrinciples: this.state.selectedPrinciples.map((value) =>value.id),
 		};
-		console.log(product);
 		fetch(server_url + '/product/'+this.props.product.id, {
 		  method: 'put',
 		  headers: {

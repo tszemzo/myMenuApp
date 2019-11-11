@@ -69,8 +69,8 @@ router.post('/', function(req, res){
 
 router.put('/:id',function(req, res){
 	let productId = req.params.id;
-	let { info, name, price,  activePrinciples, img, foodTypeId } = req.body
-	productsRepository.changeProductData(productId, name, price, info, activePrinciples, img, foodTypeId).then((product) => {
+	let {name, price, info, activePrinciples, img, foodTypeId} = req.body
+	productsRepository.changeProductData(productId, name, info, price, activePrinciples, img, foodTypeId).then((product) => {
 		res.json(product)
 	})
 
