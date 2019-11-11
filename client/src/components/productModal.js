@@ -104,7 +104,7 @@ class ProductModal extends React.Component {
     super(props);
     const { product } = props
     this.state = {
-      selectedImage: (product.images.length)? product.images[0] : "https://5.imimg.com/data5/RE/SD/MY-3773531/pharmaceutical-product-500x500.jpg",
+      selectedImage: (product.images.length)? product.images[0] : "https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-855098134.jpg",
       selectedIndex: 0,
       editProductShow: false,
       showPrinciple: false,
@@ -214,7 +214,7 @@ class ProductModal extends React.Component {
               </IconButton>
             </div>
             <Typography variant="body1" gutterBottom>
-            Categorias: {
+            Categoria: {
               this.props.product.ActivePrinciples.map((activePrinciple, idx) => {
                 return (
                   <Button onClick={() => this.openPrincipleModal(activePrinciple)} color="primary">
@@ -226,17 +226,13 @@ class ProductModal extends React.Component {
              }
            </Typography>
            <Typography variant="body1" >
-             {this.props.product.description}
+            Descripcion: {this.props.product.description}
            </Typography>
-           <Typography variant="overline">
-            Formats:{
-              this.props.product.formats.map((format, idx) => {
-                return (<Typography variant="overline" >{format}</Typography>)
-              })
-             }
+           <Typography variant="body1">
+            Price: ${this.props.product.price} 
            </Typography>
-           <Typography variant="button">
-             Code: {this.props.product.code}
+           <Typography variant="body1">
+            Vegetarianos/celíacos: {this.props.product.vegetarian}
            </Typography>
 
           </DialogContent>

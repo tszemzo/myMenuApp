@@ -23,19 +23,24 @@ class Backoffice extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			tabs:[{
+			tabs:[
+			{
+				label: 'Categorias',
+				renderer: this.renderActivePrinciplesBackoffice.bind(this)
+			},
+			{
 				label: 'Platos',
 				renderer: this.renderProductsBackoffice.bind(this)
 			},{
 				label: 'Menues',
-				renderer: this.renderActivePrinciplesBackoffice.bind(this)
+				renderer:  this.renderPaymentMethodsBackoffice.bind(this)
 			},
 			{
 				label: 'Métodos de pago',
 				renderer: this.renderPaymentMethodsBackoffice.bind(this)
 			}],
 			products: [],
-			payment_methods: [], 
+			paymentMethods: [],
 			activePrinciples: [],
 			search: '',
 			addProductShow:false,
@@ -67,7 +72,7 @@ class Backoffice extends Component{
 	}
 
 	getPaymentMethods(){
-		fetch(server_url + '/paymentmethod', {
+		fetch(server_url + '/methods', {
 			method: 'get',
 			headers: {
 				'Content-Type':'application/json',
@@ -76,11 +81,9 @@ class Backoffice extends Component{
 		})
 		.then(response => response.json())
 		.then(data => {
-			// var newprod = {name: data.products[0].name}
-			// data.products.push(product)
 			console.log(data.methods)
 			this.setState({
-				payment_methods : data.methods,
+				paymentMethods : data.methods,
 			});
 		})
 		.catch((err) => {
@@ -119,9 +122,9 @@ class Backoffice extends Component{
 	}
 
 	handleMethodAdd(method){
-		let newList = this.state.payment_methods
+		let newList = this.state.paymentMethods
 		newList.unshift(method)
-		this.setState({ payment_methods : newList})
+		this.setState({ paymentMethods : newList})
 	}
 
 	handlePrincipleAdd(principle){
@@ -169,11 +172,11 @@ class Backoffice extends Component{
 	}
 	onPaymentMethodDelete(deletedPaymentMethod){
 		let newMethods = []
-		this.state.payment_methods.forEach(payment_method => {
-			if(deletedPaymentMethod.id !=payment_method.id)
-				newMethods.push(payment_method)
+		this.state.paymentMethods.forEach(method => {
+			if(method.id !=method.id)
+				newMethods.push(method)
 		})
-		this.setState({payment_methods: newMethods})
+		this.setState({paymentMethods: newMethods})
 	}
 	renderPaymentMethodsBackoffice(){
 		return(
@@ -188,6 +191,7 @@ class Backoffice extends Component{
 						</div>
 						<div style={styles.cardBody}>
 						{
+
 							this.state.payment_methods.map((method, i) =>{
 								if(method.name.toLowerCase().includes(this.state.search.toLowerCase()))
 								return(
@@ -200,6 +204,7 @@ class Backoffice extends Component{
 						}
 			</div>
 			<AddPaymentMethodModal open={this.state.addPaymentMethodShow} onAdd={this.handleMethodAdd.bind(this)} handleClose={this.closePaymentMethodDialog.bind(this)}/>
+
 			</div>
 		)
 	}
@@ -239,7 +244,7 @@ class Backoffice extends Component{
 			<div>
 			<div style={styles.cardHeader}>
 							<Typography variant="h4">
-								Menus
+								Categorias
 							</Typography>
 							<IconButton onClick={() => this.setState({addPrincipleShow: true})}>
 								<AddBox color="primary"/>
