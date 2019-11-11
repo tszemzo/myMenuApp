@@ -382,17 +382,7 @@ class AddPaymentMethodModal extends React.Component {
 					          	</div>
 					        	</FormControl>
 					        ))}
-					        <Button
-					          style={{margin: '10px'}}
-					          type="button"
-					          fullWidth
-					          variant="outlined"
-					          color="secondary"
-					          onClick={this.handleAddList('activePrinciples')}
-					          className="small"
-					        >
-					          Agregar Categoria
-					        </Button>
+					        
 			            </div>
 
 			            <Button
