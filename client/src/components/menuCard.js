@@ -28,12 +28,22 @@ class MenuCard extends React.Component {
                             </Typography>
                         </CardContent>
                         <CardContent>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                {menu.description}
+                            </Typography>
+                        </CardContent>
+                        <CardContent>
                             {menu.Products.map((product, i) =>(
                                 <Typography variant="h6" component="h2">
                                     {product.name}
                                 </Typography>
                                 ))
                             }
+                        </CardContent>
+                        <CardContent>
+                                <Typography variant="h6" component="h2">
+                                    descuento: {menu.discount} % !!
+                                </Typography>
                         </CardContent>
                     </CardActionArea>
                 </Card>
@@ -44,9 +54,9 @@ class MenuCard extends React.Component {
 
 const styles = theme => ({
     card: {
-        maxWidth: 400,
+        maxWidth: 600,
         margin: 20,
-        width: 300,
+        width: 500,
         [theme.breakpoints.down('sm')]: {
             width: '95%',
             marginLeft: 'auto',
