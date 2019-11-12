@@ -9,6 +9,7 @@ import AddPrincipleModal from '../components/addPrincipleModal';
 import SearchAppBar from '../components/searchAppBar';
 import ProductCard from '../components/productCard';
 import MethodCard from '../components/methodCard';
+import MenuCard from '../components/menuCard';
 import PrincipleCard from '../components/principleCard';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -16,6 +17,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import AddProductModal from '../components/addProductModal';
 import AddPaymentMethodModal from '../components/addPaymentMethodModal';
+import AddMenuModal from '../components/addMenuModal';
 import config from '../config/config';
 
 const server_url = config.server_url;
@@ -33,7 +35,7 @@ class Backoffice extends Component{
 				renderer: this.renderProductsBackoffice.bind(this)
 			},{
 				label: 'Menues',
-				renderer:  this.renderPaymentMethodsBackoffice.bind(this)
+				renderer:  this.renderMenuBackoffice.bind(this)
 			},
 			{
 				label: 'Métodos de pago',
@@ -42,10 +44,12 @@ class Backoffice extends Component{
 			products: [],
 			paymentMethods: [],
 			activePrinciples: [],
+			menus: [],
 			search: '',
 			addProductShow:false,
 			addPrincipleShow:false,
 			addPaymentMethodShow:false,
+			addMenuShoe:false,
 		}
 
 	}
@@ -115,6 +119,24 @@ class Backoffice extends Component{
 		});
 	}
 
+	getMenus(){
+		fetch(server_url + '/menus', {
+			method: 'get',
+			headers: {
+				'Content-Type':'application/json',
+			}
+		})
+			.then(response => response.json())
+			.then(data => {
+				this.setState({
+					menus : data.menu,
+				});
+			})
+			.catch((err) => {
+				console.log(err)
+			});
+	}
+
 	handleProductAdd(product){
 		let newList = this.state.products
 		newList.unshift(product)
@@ -127,6 +149,12 @@ class Backoffice extends Component{
 		this.setState({ paymentMethods : newList})
 	}
 
+	handleMenuAdd(menu){
+		let newList = this.state.menus
+		newList.unshift(menu)
+		this.setState({ menus : newList})
+	}
+
 	handlePrincipleAdd(principle){
 		let newList = this.state.activePrinciples
 		newList.unshift(principle)
@@ -137,6 +165,7 @@ class Backoffice extends Component{
 		this.getProducts();
 		this.getActivePrinciples();
 		this.getPaymentMethods();
+		this.getMenus();
 	}
 
 	closeProductDialog(){
@@ -147,6 +176,9 @@ class Backoffice extends Component{
 	}
 	closePaymentMethodDialog(){
     	this.setState({ addPaymentMethodShow: false });
+	}
+	closeMenuDialog(){
+		this.setState({ addMenuShow: false });
 	}
 	handleTextChange= name => event => {
 	    this.setState({ [name] : event.target.value });
@@ -173,10 +205,19 @@ class Backoffice extends Component{
 	onPaymentMethodDelete(deletedPaymentMethod){
 		let newMethods = []
 		this.state.paymentMethods.forEach(method => {
-			if(method.id !=method.id)
+			if(deletedPaymentMethod.id !=method.id)
 				newMethods.push(method)
 		})
 		this.setState({paymentMethods: newMethods})
+	}
+
+	onMenuDelete(deletedMenu){
+		let newMenus = []
+		this.state.menus.forEach(menu => {
+			if(deletedMenu.id !=menu.id)
+				newMenus.push(menu)
+		})
+		this.setState({menus: newMenus})
 	}
 	renderPaymentMethodsBackoffice(){
 		return(
@@ -209,6 +250,36 @@ class Backoffice extends Component{
 		)
 	}
 
+	renderMenuBackoffice(){
+		return(
+			<div>
+				<div style={styles.cardHeader}>
+					<Typography variant="h4">
+						Menus
+					</Typography>
+					<IconButton onClick={() => this.setState({addMenuShow: true})}>
+						<AddBox color="primary"/>
+					</IconButton>
+				</div>
+				<div style={styles.cardBody}>
+					{
+
+						this.state.menus.map((menu, i) =>{
+							if(menu.name.toLowerCase().includes(this.state.search.toLowerCase()))
+								return(
+									<div key={i}>
+										<MenuCard editable={true} onDelete={this.onMenuDelete.bind(this)} menu={menu} />
+									</div>
+								)
+
+						})
+					}
+				</div>
+				<AddMenuModal open={this.state.addMenuShow} onAdd={this.handleMenuAdd.bind(this)} handleClose={this.closeMenuDialog.bind(this)}/>
+
+			</div>
+		)
+	}
 
 	renderProductsBackoffice(){
 		return(
