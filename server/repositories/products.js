@@ -28,6 +28,14 @@ class ProductsRepo {
 		});
 	};
 
+	getProductByList(list){
+		return Products.findAll({
+			where:{
+				id: list
+			}
+		})
+	}
+
 	changeProductData( productId, name, info, price, activePrinciples, images, foodTypeId){
 		let _self = this
 		return this.getProduct(productId).then(product => {

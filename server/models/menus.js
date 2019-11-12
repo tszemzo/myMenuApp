@@ -1,17 +1,17 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-    const Menu = sequelize.define('Menu', {
+    const Menus = sequelize.define('Menus', {
         name: DataTypes.STRING,
-        information: DataTypes.STRING,
+        description: DataTypes.STRING,
         discount: DataTypes.INTEGER,
     }, {});
-    Menu.associate = function(models) {
-        Menu.belongsToMany(models.Product,{
+    Menus.associate = function(models) {
+        Menus.belongsToMany(models.Product,{
             through: {
                 model: models.MenuProducts,
             },
             foreignKey: 'menuId'
         })
     };
-    return Menu ;
+    return Menus ;
 };

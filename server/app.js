@@ -10,6 +10,7 @@ var usersRouter = require('./routes/users');
 var principlesRouter = require('./routes/principles');
 var methodsRouter = require('./routes/paymentmethod');
 var foodTypes = require('./routes/foodTypes');
+var menu = require('./routes/menus')
 var app = express();
 
 // view engine setup
@@ -35,6 +36,7 @@ app.use('/product', productsRouter);
 app.use('/methods', methodsRouter);
 app.use('/foodTypes', foodTypes);
 app.use('/principles', principlesRouter);
+app.use('/menus', menu);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
