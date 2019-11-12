@@ -24,8 +24,6 @@ import CloudUploadOutlineIcon from '@material-ui/icons/CloudUpload';
 
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import config from '../config/config';
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 const server_url = config.server_url;
 
 const styles = {
@@ -178,15 +176,6 @@ class AddMenuModal extends React.Component {
         });
     }
 
-    handleInputListChange = idx => (event) => {
-        const { value, name } = event.target;
-        const newInput = this.state[name].map((value, sidx) => {
-            if (idx !== sidx) return value;
-            return event.target.value;
-        });
-        this.setState({ [name]: newInput });
-    };
-
     handleAddList = name => (event) => {
         let newList = this.state[name];
         newList.push('');
@@ -217,7 +206,7 @@ class AddMenuModal extends React.Component {
             products: [],
             selectedProducts: []
         })
-        fetch(server_url + '/menus', {
+        fetch(server_url + '/menus/', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
@@ -329,7 +318,7 @@ class AddMenuModal extends React.Component {
                             style={{margin: '10px'}}
                         >
                             Subir
-                        </Button>
+                        </Button >
                     </form>
                 </DialogContent>
             </Dialog>

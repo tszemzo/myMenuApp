@@ -52,6 +52,16 @@ class MenusRepo {
             }
         })
     };
+
+    deleteMenuProducts(menuId){
+        return MenuProducts.destroy({
+            where:{
+                menuId: menuId
+            }
+        })
+
+
+    }
 }
 
 module.exports = new MenusRepo();

@@ -38,7 +38,9 @@ router.post('/', function(req, res){
 
 router.delete('/:id',function(req, res){
     menuRepository.deleteMenu(req.params.id).then(menu => {
-        res.json(menu)
+        menuRepository.deleteMenuProducts(req.params.id).then( () => {
+            res.json(menu)
+        })
     })
 })
 
