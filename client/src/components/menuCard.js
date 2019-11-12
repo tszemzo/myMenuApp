@@ -1,18 +1,46 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
-import Create from '@material-ui/icons/Create';
-import IconButton from '@material-ui/core/IconButton';
 
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import DialogActions from "@material-ui/core/DialogActions";
+import config from "../config/config";
+const server_url = config.server_url;
 
 class MenuCard extends React.Component {
     constructor(props){
         super(props);
+    }
+
+    deleteMenu(){
+        fetch(server_url + '/menus/' + this.props.menu.id, {
+            method: 'delete',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(res => res.json())
+            .then(res => {
+                this.props.onDelete(this.props.menu)
+                this.props.handleClose();
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
+    renderEdit(classes, editable){
+        if(editable)
+            return(
+                <div>
+                    <Button onClick={this.deleteMenu.bind(this)} className={classes.buttonDelete}>
+                        Borrar
+                    </Button>
+                </div>
+            )
     }
 
 
@@ -22,6 +50,9 @@ class MenuCard extends React.Component {
             <div>
                 <Card className={classes.card} style={{position: 'relative'}} >
                     <CardActionArea>
+                        <DialogActions>
+                            {this.renderEdit(classes,  editable)}
+                        </DialogActions>
                         <CardContent>
                             <Typography gutterBottom variant="h4" component="h2">
                                 {menu.name}
@@ -34,7 +65,7 @@ class MenuCard extends React.Component {
                         </CardContent>
                         <CardContent>
                             {menu.Products.map((product, i) =>(
-                                <Typography variant="h6" component="h2">
+                                <Typography key={i} variant="h6" component="h2">
                                     {product.name}
                                 </Typography>
                                 ))

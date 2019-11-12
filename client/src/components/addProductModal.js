@@ -135,11 +135,11 @@ class AddProductModal extends React.Component {
 		const {selectedPrinciples} = this.state
 		let auxSelectedPrinciples = selectedPrinciples
 		auxSelectedPrinciples[id]=principle //agrego la categoria a las seleccionadas
-		this.setState({ selectedPrinciples: auxSelectedPrinciples,principlesSuggestions: false})
+		this.setState({ selectedPrinciples: auxSelectedPrinciples,productSuggestions: false})
 	}
 
 	renderSuggestions(idx){
-		if(idx == this.state.selectedForm && this.state.principlesSuggestions)
+		if(idx == this.state.selectedForm && this.state.productSuggestions)
 			return(
 				<Paper>
 				<List component="nav" aria-label="Secondary mailbox folders">
@@ -398,7 +398,7 @@ class AddProductModal extends React.Component {
 									name="selectedPrinciples"
 									autoComplete='off'
 									placeholder={`Categoria? ${idx + 1}`}
-									onFocus={() => {this.setState({ selectedForm : idx, principlesSuggestions: true})}}
+									onFocus={() => {this.setState({ selectedForm : idx, productSuggestions: true})}}
 									value={selectedCategory.name}
 									//onChange={this.handleInputListChange(idx)}
 									/>

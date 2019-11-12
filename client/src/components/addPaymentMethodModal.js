@@ -136,11 +136,11 @@ class AddPaymentMethodModal extends React.Component {
 		let auxIds = selectedPrinciples
 		auxPrinc[id]=principle.name
 		auxIds[id]=principle.id
-		this.setState({ activePrinciples: auxPrinc, selectedPrinciples: auxIds,principlesSuggestions: false})
+		this.setState({ activePrinciples: auxPrinc, selectedPrinciples: auxIds,productSuggestions: false})
 	}
 
 	renderSuggestions(idx){
-		if(idx == this.state.selectedForm && this.state.principlesSuggestions)
+		if(idx == this.state.selectedForm && this.state.productSuggestions)
 			return(
 				<Paper>
 				<List component="nav" aria-label="Secondary mailbox folders">
@@ -366,7 +366,7 @@ class AddPaymentMethodModal extends React.Component {
 						              name="activePrinciples"
 						              autoComplete='off'
 						              placeholder={`Categoria ${idx + 1}`}
-						              onFocus={() => {this.setState({ selectedForm : idx, principlesSuggestions: true})}}
+						              onFocus={() => {this.setState({ selectedForm : idx, productSuggestions: true})}}
 						              
 						              value={img}
 						              onChange={this.handleInputListChange(idx)}

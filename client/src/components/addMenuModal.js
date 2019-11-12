@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Autosuggest from 'react-autosuggest';
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -14,21 +12,20 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import Avatar from '@material-ui/core/Avatar';
-import ImageIcon from '@material-ui/icons/Image';
-import WorkIcon from '@material-ui/icons/Work';
-import BeachAccessIcon from '@material-ui/icons/BeachAccess';
-import MenuAppBar from '../components/menuAppBar';
 import Paper from '@material-ui/core/Paper';
 import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 import Input from '@material-ui/core/Input';
 import InputBase from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import CloudUploadOutlineIcon from '@material-ui/icons/CloudUpload';
-import Divider from '@material-ui/core/Divider';
+
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import config from '../config/config';
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 const server_url = config.server_url;
 
 const styles = {
@@ -40,7 +37,10 @@ const styles = {
     },
     buttonDelete:{
         color: 'tomato'
-    }
+    },
+    formControl: {
+        minWidth: 120,
+    },
 };
 
 
@@ -92,32 +92,26 @@ class AddMenuModal extends React.Component {
         super(props);
         this.state = {
             name: '',
-            paymentImage: '',
-            img: [],
-            activePrinciples: [],
-
-            selectedPrinciples: []
-
+            info: '',
+            discount: 0,
+            products: [],
+            selectedProducts: []
         }
     }
 
-    setPrinciples(){
-        fetch(server_url + '/principles', {
+    setProducts(){
+        fetch(server_url + '/product/', {
             method: 'get',
             headers: {
                 'Content-Type':'application/json',
-                // 'Authorization': authToken.getToken(),
             }
         })
             .then(response => {
-                return response.json()
+                return response.clone().json()
             })
             .then(data => {
-                // var newprod = {name: data.products[0].name}
-                // data.products.push(product
-                console.log(data.principles)
                 this.setState({
-                    principios : data.principles,
+                    products: data.products
                 });
             })
             .catch((err) => {
@@ -125,29 +119,34 @@ class AddMenuModal extends React.Component {
             });
     }
 
-    setActivePrinciple(id, principle){
-        console.log("HOLA", this.state)
-        const { activePrinciples, selectedPrinciples} = this.state
-        let auxPrinc = activePrinciples
-        let auxIds = selectedPrinciples
-        auxPrinc[id]=principle.name
-        auxIds[id]=principle.id
-        this.setState({ activePrinciples: auxPrinc, selectedPrinciples: auxIds,principlesSuggestions: false})
+    setProduct(id, product){
+        const {selectedProducts} = this.state
+        let auxselectedProducts = selectedProducts
+        auxselectedProducts[id]=product
+        this.setState({ selectedProducts: auxselectedProducts,productSuggestions: false})
     }
 
     renderSuggestions(idx){
-        if(idx == this.state.selectedForm && this.state.principlesSuggestions)
+        if(idx == this.state.selectedForm && this.state.productSuggestions)
             return(
                 <Paper>
                     <List component="nav" aria-label="Secondary mailbox folders">
                         {
-                            this.state.principios.map((principio,i) => {
-                                if(principio.name.toLowerCase().includes(this.state.activePrinciples[idx].toLowerCase()))
+                            this.state.products.map((aProduct,i) => {
+                                if(!this.state.selectedProducts.includes(aProduct)){
                                     return(
-                                        <ListItem key={i} onClick={() => {this.setActivePrinciple(idx, principio)}} button>
-                                            <ListItemText  primary={principio.name} />
+                                        <ListItem key={i} onClick={() => {
+                                            this.setProduct(idx, aProduct)}
+                                        } button>
+                                            <ListItemText  primary={aProduct.name} />
                                         </ListItem>
                                     )
+                                }else{
+                                    return(//si ya lo selecciono no es clickeable
+                                        <ListSubheader>{aProduct.name}</ListSubheader>
+                                    )
+                                }
+
                             })
                         }
                     </List>
@@ -156,25 +155,18 @@ class AddMenuModal extends React.Component {
         return <div/>
     }
     componentDidMount(){
-        this.setPrinciples()
-        if(this.props.payment_method){
-            const { payment_method } = this.props
-            let principlesNames = []
-            let principlesId = []
-            payment_method.ActivePrinciples.forEach(principle => {
-                principlesNames.push(principle.name)
-                principlesId.push(principle.id)
+        this.setProducts()
+        if(this.props.menu){
+            const { menu } = this.props
+            let selectedProducts = []
+            menu.Products.forEach(aProduct => {
+                selectedProducts.push(aProduct)
             })
             this.setState({
-                name: payment_method.name,
-                paymentImage: payment_method.paymentImage/*,
-				vegetarian: product.vegetarian,
-				info: product.description,
-				img: product.images,
-				format: product.formats,
-				activePrinciples: principlesNames,
-				selectedPrinciples: principlesId
-				*/
+                name: menu.name,
+                info: menu.description,
+                discount: menu.discount,
+                selectedProducts: selectedProducts
             })
         }
     }
@@ -210,70 +202,30 @@ class AddMenuModal extends React.Component {
             });
         })
     };
-    editOld(){
-        let payment_method = {
-            id: this.props.payment_method.id,
-            name: this.state.name,
-            paymentImage: this.state.paymentImage/*,
-			vegetarian: this.state.vegetarian,
-			info: this.state.info,
-			img:  this.state.img,
-			format: this.state.format,
-			activePrinciples: this.state.selectedPrinciples,
-			*/
-        };
-        console.log(payment_method);
-        /*fetch(server_url + '/product/'+this.props.product.id, {*/
-        fetch(server_url + '/paymentmethod/'+this.props.payment_method.id, {
-            method: 'put',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payment_method),
-        })
-            .then(res => res.json())
-            .then(res => {
-                console.log(res,123);
-                this.props.onAdd(res)
-            })
-            .catch(err => {
-                console.error(err);
-            });
 
-    }
     createNew(){
-        let payment_method = {
+        let menu = {
             name: this.state.name,
-            paymentImage: this.state.paymentImage/*,
-			vegetarian: this.state.vegetarian,
-			info: this.state.info,
-			img:  this.state.img,
-			format: this.state.format,
-			activePrinciples: this.state.selectedPrinciples,
-			*/
+            info: this.state.info,
+            discount: this.state.discount,
+            products: this.state.selectedProducts.map((value) =>value.id),
         };
-        console.log(payment_method);
         this.setState({
             name: '',
-            paymentImage: ''/*,
-					vegetarian: '',
-					info: '',
-					img: [],
-					format: [],
-					activePrinciples: [],
-					selectedPrinciples: []
-					*/
+            info: '',
+            discount: 0,
+            products: [],
+            selectedProducts: []
         })
-        fetch(server_url + '/methods', {
+        fetch(server_url + '/menus', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(payment_method),
+            body: JSON.stringify(menu),
         })
             .then(res => res.json())
             .then(res => {
-                console.log(res,123);
                 this.props.onAdd(res)
             })
             .catch(err => {
@@ -283,11 +235,7 @@ class AddMenuModal extends React.Component {
     }
     onSubmit = (event) => {
         event.preventDefault();
-        console.log("HOLA ON SUBMIT")
-        if(this.props.payment_method)
-            this.editOld()
-        else
-            this.createNew()
+        this.createNew()
         this.props.handleClose()
     }
     render(){
@@ -303,7 +251,7 @@ class AddMenuModal extends React.Component {
                         <CloudUploadOutlineIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Crear un nuevo menu
+                        Subir un nuevo Menu
                     </Typography>
                     <form className={classes.form} onSubmit={this.onSubmit}>
                         <FormControl margin="normal" required fullWidth>
@@ -315,61 +263,42 @@ class AddMenuModal extends React.Component {
                                    value={this.state.name}
                                    autoFocus />
                         </FormControl>
-
-
-                        <div style={{margin: '10px'}} className={classes.list}>
-                            {this.state.img.map((img, idx) => (
-                                <FormControl margin="normal">
-                                    <div className="listInput">
-                                        <InputLabel htmlFor="text">Imagen {idx + 1}</InputLabel>
-                                        <InputBase
-                                            className={classes.inputInList}
-                                            name="img"
-                                            autoComplete='off'
-                                            placeholder={`Imagen ${idx + 1}`}
-                                            value={img}
-                                            onChange={this.handleInputListChange(idx)}
-                                        />
-                                        <IconButton className={classes.iconButton}
-                                                    type="button"
-                                                    onClick={this.handleRemoveList(idx, ['img'])}
-                                                    className="small"
-                                        >
-                                            <RemoveCircleIcon />
-                                        </IconButton>
-                                    </div>
-                                </FormControl>
-                            ))}
-                            <Button
-                                type="button"
-                                fullWidth
-                                variant="outlined"
-                                color="secondary"
-                                onClick={this.handleAddList('img')}
-                                className="small"
-                            >
-                                Agregar Imagen
-                            </Button>
-                        </div>
-
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="textarea">Descripción</InputLabel>
+                            <Input name="info"
+                                   type="info"
+                                   autoComplete='off'
+                                   value={this.state.info}
+                                   multiline={true}
+                                   id="info"
+                                   onChange={this.handleInputChange}
+                            />
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="text">Descuento</InputLabel>
+                            <Input name="price"
+                                   type="number"
+                                   autoComplete='off'
+                                   id="price"
+                                   onChange={this.handleInputChange}
+                                   value={this.state.price}
+                            />
+                        </FormControl>
                         <div className={classes.list}>
-                            {this.state.activePrinciples.map((img, idx) => (
+                            {this.state.selectedProducts.map((selectedProduct, idx) => (
                                 <FormControl margin="normal" >
                                     <div className="listInput" >
-                                        <InputLabel htmlFor="text">Categoria {idx + 1}</InputLabel>
                                         <InputBase
                                             className={classes.inputInList}
-                                            name="activePrinciples"
+                                            name="selectedProducts"
                                             autoComplete='off'
-                                            placeholder={`Categoria ${idx + 1}`}
-                                            onFocus={() => {this.setState({ selectedForm : idx, principlesSuggestions: true})}}
-
-                                            value={img}
-                                            onChange={this.handleInputListChange(idx)}
+                                            placeholder={`plato ${idx + 1}`}
+                                            onFocus={() => {this.setState({ selectedForm : idx, productSuggestions: true})}}
+                                            value={selectedProduct.name}
                                         />
                                         <IconButton className={classes.iconButton}
                                                     type="button"
-                                                    onClick={this.handleRemoveList(idx, ['activePrinciples','selectedPrinciples'])}
+                                                    onClick={this.handleRemoveList(idx, ['selectedProducts'])}
                                                     className="small"
                                         >
                                             <RemoveCircleIcon />
@@ -378,7 +307,17 @@ class AddMenuModal extends React.Component {
                                     </div>
                                 </FormControl>
                             ))}
-
+                            <Button
+                                style={{margin: '10px'}}
+                                type="button"
+                                fullWidth
+                                variant="outlined"
+                                color="secondary"
+                                onClick={this.handleAddList('selectedProducts')}
+                                className="small"
+                            >
+                                Agregar Plato
+                            </Button>
                         </div>
 
                         <Button
