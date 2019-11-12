@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ProductCard from '../components/productCard';
 import MethodCard from '../components/methodCard';
+import MenuCard from '../components/menuCard';
 import MenuAppBar from '../components/menuAppBar';
 import SearchAppBar from '../components/searchAppBar';
 import TabNav from '../components/tabNav';
@@ -26,7 +27,7 @@ class Home extends React.Component{
 
 			},{
 				label: 'Menues',
-				renderer: this.renderProducts.bind(this)
+				renderer: this.renderMenus.bind(this)
 
 			},
 			{
@@ -84,32 +85,34 @@ class Home extends React.Component{
 		});
 	}
 
+	getMenus(){
+		fetch(server_url + '/menus', {
+			method: 'get',
+			headers: {
+				'Content-Type':'application/json',
+			}
+		})
+			.then(response => response.json())
+			.then(data => {
+				this.setState({
+					menus : data.menu,
+				});
+			})
+			.catch((err) => {
+				console.log(err)
+			});
+	}
+
 	componentDidMount(){
 		this.getProducts();
 		this.getPaymentMethods();
+		this.getMenus();
 	}
 
 	handleTextChange= name => event => {
 	    this.setState({ [name] : event.target.value });
 	};
 
-	// renderProducts(){
-	// 	const { classes } = this.props;
-	// 	return(
-	// 		<div className={classes.products}>
-	// 			{
-	// 				this.state.products.map((product, i) =>{
-	// 					if(product.name.toLowerCase().includes(this.state.search.toLowerCase()))
-	// 						return(
-	// 							<div key={i}>
-	// 	                    		<ProductCard editable={false} product={product}/>
-	// 	                    	</div>
-	// 						)
-	// 				})
-	// 			}
-	// 		</div>
-	// 	)
-	// }
 
 	renderProducts(){
 		const { classes } = this.props;
@@ -185,6 +188,24 @@ class Home extends React.Component{
 								<div key={i}>
 		                    		<MethodCard editable={false} method={method}/>
 		                    	</div>
+							)
+					})
+				}
+			</div>
+		)
+	}
+
+	renderMenus(){
+		const { classes } = this.props;
+		return(
+			<div className={classes.products}>
+				{
+					this.state.menus.map((menu, i) =>{
+						if(menu.name.toLowerCase().includes(this.state.search.toLowerCase()))
+							return(
+								<div key={i}>
+									<MenuCard editable={false} menu={menu}/>
+								</div>
 							)
 					})
 				}
