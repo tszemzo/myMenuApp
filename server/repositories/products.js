@@ -5,7 +5,7 @@ var ActivePrinciples = require("../models").ActivePrinciples;
 var Images = require("../models").Images;
 
 class ProductsRepo {
-	getProduct(id){
+	 getProduct(id){
 		return Products.findOne({
 			where:{
 				id: id

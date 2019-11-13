@@ -7,7 +7,7 @@ class MenusRepo {
 
 
     getMenu(id){
-        return Menues.findOne({
+        return Menus.findOne({
             where:{
                 id: id
             },include:[{

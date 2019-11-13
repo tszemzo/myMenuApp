@@ -92,7 +92,7 @@ class AddMenuModal extends React.Component {
             name: '',
             info: '',
             discount: 0,
-            products: [],
+            Products: [],
             selectedProducts: []
         }
     }
@@ -109,7 +109,7 @@ class AddMenuModal extends React.Component {
             })
             .then(data => {
                 this.setState({
-                    products: data.products
+                    Products: data.products
                 });
             })
             .catch((err) => {
@@ -130,7 +130,7 @@ class AddMenuModal extends React.Component {
                 <Paper>
                     <List component="nav" aria-label="Secondary mailbox folders">
                         {
-                            this.state.products.map((aProduct,i) => {
+                            this.state.Products.map((aProduct,i) => {
                                 if(!this.state.selectedProducts.includes(aProduct)){
                                     return(
                                         <ListItem key={i} onClick={() => {
@@ -197,13 +197,14 @@ class AddMenuModal extends React.Component {
             name: this.state.name,
             info: this.state.info,
             discount: this.state.discount,
-            products: this.state.selectedProducts.map((value) =>value.id),
+            productIds: this.state.selectedProducts.map((value) =>value.id),
+            Products: this.state.selectedProducts
         };
         this.setState({
             name: '',
             info: '',
             discount: 0,
-            products: [],
+            Products: [],
             selectedProducts: []
         })
         fetch(server_url + '/menus/', {

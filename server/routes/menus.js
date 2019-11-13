@@ -28,7 +28,7 @@ router.post('/', function(req, res){
         var menuId = menu.id;
         menuRepository.linkMenuAndProducts(menuId, productIds).then( () =>{
             productsRepository.getProductByList(productIds).then((products) =>{
-                menu.dataValues.products = products
+                menu.dataValues.Products = products
                 res.json(menu)
 
             })
