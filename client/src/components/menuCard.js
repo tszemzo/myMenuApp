@@ -8,6 +8,13 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import DialogActions from "@material-ui/core/DialogActions";
 import config from "../config/config";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import GridList from "@material-ui/core/GridList";
+import IconButton from "@material-ui/core/IconButton";
+import GridListTileBar from "@material-ui/core/GridListTileBar";
+import GridListTile from "@material-ui/core/GridListTile";
+import CardMedia from "@material-ui/core/CardMedia";
 const server_url = config.server_url;
 
 class MenuCard extends React.Component {
@@ -49,7 +56,9 @@ class MenuCard extends React.Component {
         return (
             <div>
                 <Card className={classes.card} style={{position: 'relative'}} >
+                    <div>
                     <CardActionArea>
+
                         <DialogActions>
                             {this.renderEdit(classes,  editable)}
                         </DialogActions>
@@ -64,19 +73,44 @@ class MenuCard extends React.Component {
                             </Typography>
                         </CardContent>
                         <CardContent>
-                            {menu.Products.map((product, i) =>(
-                                <Typography key={i} variant="h6" component="h2">
-                                    {product.name}
-                                </Typography>
-                                ))
-                            }
+                            <GridList className={classes.gridList} cols={2.5}>
+                                {menu.Products.map((product, i) =>(
+                                    <GridListTile key={product.name}>
+                                        <CardMedia
+                                            component="img"
+                                            alt="Plato"
+                                            className={classes.media}
+                                            height="140"
+                                            src={product.images}
+                                            title="Plato"
+                                        />
+                                        <GridListTileBar
+                                            title={product.name}
+                                            classes={{
+                                                root: classes.titleBar,
+                                                title: classes.title,
+                                            }}
+                                        />
+                                    </GridListTile>
+                                ))}
+                            </GridList>
+
                         </CardContent>
-                        <CardContent>
-                                <Typography variant="h6" component="h2">
-                                    descuento: {menu.discount} % !!
-                                </Typography>
-                        </CardContent>
+
+
+
                     </CardActionArea>
+                    <div className="ribbon-wrapper">
+                        <div className="glow">&nbsp;</div>
+                        <div className="ribbon-front">
+                            Super descuento: {menu.discount} % !!
+                        </div>
+                        <div className="ribbon-edge-topleft"></div>
+                        <div className="ribbon-edge-topright"></div>
+                        <div className="ribbon-edge-bottomleft"></div>
+                        <div className="ribbon-edge-bottomright"></div>
+                    </div>
+                    </div>
                 </Card>
             </div>
         );
@@ -96,6 +130,24 @@ const styles = theme => ({
     },
     media: {
         objectFit: 'cover',
+    },
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
+        backgroundColor: theme.palette.background.paper,
+    },
+    gridList: {
+        flexWrap: 'nowrap',
+       transform: 'translateZ(0)',
+    },
+    title: {
+        color: theme.palette.primary.dark,
+    },
+    titleBar: {
+        background:
+            'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
     },
 });
 
