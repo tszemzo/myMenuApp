@@ -38,6 +38,7 @@ class Home extends React.Component{
 			products: [],
 			payment_methods: [], 
 			activePrinciples: [],
+			menus: [],
 			search: '',
 			addProductShow:false,
 			addPrincipleShow:false,
@@ -95,7 +96,7 @@ class Home extends React.Component{
 			.then(response => response.json())
 			.then(data => {
 				this.setState({
-					menus : data.menu,
+					menus : data.menus,
 				});
 			})
 			.catch((err) => {

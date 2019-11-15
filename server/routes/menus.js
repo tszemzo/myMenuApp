@@ -17,10 +17,19 @@ router.get('/:id',function(req, res){
 })
 
 router.get('/', function(req, res, next) {
-    return menuRepository.getMenus().then((menu) => {
-        res.json({menu})
+    return menuRepository.getMenus().then((menus) => {
+        menus.forEach((menu) => {
+            menu.Products.forEach((product) => {
+                const {Images} = product
+                if(Images.length > 0){
+                    product.dataValues.mainImage = Images[0].link
+                }
+            });
+        });
+        res.json({menus})
     })
 });
+
 
 router.post('/', function(req, res){
     let {name, info, discount, productIds} = req.body

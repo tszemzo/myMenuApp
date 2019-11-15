@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 var Menus = require("../models").Menus;
 var MenuProducts = require("../models").MenuProducts;
 var Products = require("../models").Product;
+var Images = require("../models").Images;
 
 class MenusRepo {
 
@@ -11,7 +12,10 @@ class MenusRepo {
             where:{
                 id: id
             },include:[{
-                model: Products
+                model: Products,
+                include: [{
+                    model: Images
+                }]
             }]
         })
     }
@@ -19,7 +23,10 @@ class MenusRepo {
     getMenus(){ //menus? menues?
         return Menus.findAll({
             include:[{
-                model: Products
+                model: Products,
+                include: [{
+                    model: Images
+                }]
             }]
         });
     };

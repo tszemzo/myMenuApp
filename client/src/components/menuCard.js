@@ -81,7 +81,7 @@ class MenuCard extends React.Component {
                                             alt="Plato"
                                             className={classes.media}
                                             height="140"
-                                            src={product.images}
+                                            src={product.mainImage}
                                             title="Plato"
                                         />
                                         <GridListTileBar
