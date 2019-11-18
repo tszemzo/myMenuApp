@@ -129,7 +129,7 @@ class Backoffice extends Component{
 			.then(response => response.json())
 			.then(data => {
 				this.setState({
-					menus : data.menu,
+					menus : data.menus,
 				});
 			})
 			.catch((err) => {
